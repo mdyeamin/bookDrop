@@ -15,21 +15,42 @@ import { motion } from "framer-motion";
 import { FiEye, FiEyeOff, FiTruck, FiTrendingUp, FiBox } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+const router = useRouter()
 
-  const handleSignIn = (e) => {
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
-    console.log("Login Attempt Data:", userData);
+    try {
+      const { data, error } = await authClient.signIn.email({
+        ...userData,
+      });
+
+      if (error) {
+        toast.error(error.message || "Invalid credentials. Please try again.");
+        return;
+      }
+
+      if (data) {
+        toast.success("Welcome back! Login successful.");
+        
+        router.push("/"); 
+      }
+    } catch (err) {
+      toast.error("Authentication failed. Please check your connection.");
+    }
   };
 
   return (
     <main className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-[#EAECEF] bg-[radial-gradient(#cdd2d9_1px,transparent_1px)] [background-size:20px_24px] text-slate-900 select-text relative">
-      
       {/* --- LEFT PANEL: THE FLOATING FORM CARD --- */}
       <div className="w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 relative bg-transparent">
         <motion.div
@@ -68,7 +89,12 @@ const SignIn = () => {
               {/* Form Input Layout Fields */}
               <div className="space-y-4 w-full pt-2">
                 {/* 1. EMAIL ADDRESS FIELD */}
-                <TextField className="w-full" name="email" type="email" isRequired>
+                <TextField
+                  className="w-full"
+                  name="email"
+                  type="email"
+                  isRequired
+                >
                   <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
                     Email Address
                   </Label>
@@ -108,7 +134,11 @@ const SignIn = () => {
                         className="text-slate-400 hover:text-slate-600 rounded-md min-w-0 p-0 bg-transparent"
                         onPress={() => setIsVisible(!isVisible)}
                       >
-                        {isVisible ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                        {isVisible ? (
+                          <FiEyeOff size={16} />
+                        ) : (
+                          <FiEye size={16} />
+                        )}
                       </Button>
                     </InputGroup.Suffix>
                   </InputGroup>
@@ -164,7 +194,10 @@ const SignIn = () => {
           {/* DYNAMIC PATH SWITCH FOOTER LINK */}
           <div className="pt-6 w-full text-center text-xs font-bold text-slate-500 tracking-wide select-none">
             Don't have an account?{" "}
-            <Link href="/auth/signup" className="text-[#0D3B66] hover:underline ml-0.5">
+            <Link
+              href="/auth/signup"
+              className="text-[#0D3B66] hover:underline ml-0.5"
+            >
               Sign up
             </Link>
           </div>
@@ -174,7 +207,6 @@ const SignIn = () => {
       {/* --- RIGHT PANEL: ANALYTICS INFRASTRUCTURE --- */}
       <div className="relative hidden lg:flex flex-col w-full min-h-screen overflow-hidden p-16 justify-center bg-transparent">
         <div className="w-full max-w-[520px] mx-auto space-y-5">
-          
           {/* Card 1: Global Fleet Tracking */}
           <div className="w-full bg-white rounded-xl shadow-[0_10px_30px_rgba(13,59,102,0.02)] p-6 flex flex-col space-y-4 border border-gray-100/50">
             <div className="w-11 h-11 bg-[#0D3B66] rounded-lg flex items-center justify-center text-white text-lg shadow-inner">
@@ -185,17 +217,20 @@ const SignIn = () => {
                 Global Fleet Tracking
               </h3>
               <p className="text-[13px] text-slate-500 font-semibold leading-relaxed">
-                Monitor your shipments in real-time across all active zones with precision routing.
+                Monitor your shipments in real-time across all active zones with
+                precision routing.
               </p>
             </div>
           </div>
 
           {/* Row Combo Grid */}
           <div className="grid grid-cols-2 gap-5 w-full">
-            
             {/* Card 2: 99% On-Time Delivery */}
             <div className="bg-white rounded-xl shadow-[0_10px_30px_rgba(13,59,102,0.02)] p-6 flex flex-col justify-between h-[155px] border border-gray-100/50">
-              <FiTrendingUp className="text-[#F46036] text-xl" strokeWidth={2.5} />
+              <FiTrendingUp
+                className="text-[#F46036] text-xl"
+                strokeWidth={2.5}
+              />
               <div className="space-y-0.5">
                 <span className="text-4xl font-black text-[#0D3B66] tracking-tighter block leading-none">
                   99%
@@ -218,12 +253,9 @@ const SignIn = () => {
                 </p>
               </div>
             </div>
-
           </div>
-
         </div>
       </div>
-
     </main>
   );
 };

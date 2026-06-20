@@ -40,21 +40,27 @@ const SighUp = () => {
     try {
       const { data, error } = await authClient.signUp.email({
         ...userData,
+        image: photoURL,
       });
       console.log(data, error);
       if (error) {
-        toast.error(error.message);
+        toast.error(error.message || "Registration failed. Please try again.");
+        return;
       }
       if (data) {
-        toast.success("successfully signUp ");
+        toast.success("Account created successfully! Welcome aboard.");
+        // router.push("/dashboard");
+        await authClient.signOut();
+        router.push("/auth/signin");
       }
     } catch (err) {
-      toast.error(err.message);
+      toast.error(
+        "An unexpected error occurred. Please check your connection.",
+      );
     }
     // console.log(payload);
   };
 
-  // Handle image upload tracking
   // Handle image upload tracking
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
