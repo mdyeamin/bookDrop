@@ -11,7 +11,7 @@ const UsersPage = async() => {
     return (
         <div>
             <TotalUsers users={users}/>
-            <UsersTable/>
+            <UsersTable users={users}/>
         </div>
     );
 };
