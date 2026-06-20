@@ -6,7 +6,7 @@ const TotalUsers = ({users}) => {
 
   return (
     <div className="w-full bg-[#F8FAFC] p-6">
-      {/* ৩ কলামের রেসপনসিভ গ্রিড লেআউট */}
+      
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         {/* ১. TOTAL USERS CARD */}

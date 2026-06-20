@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Avatar, Button } from "@heroui/react";
-import { BsGrid1X2 } from "react-icons/bs";
+
 import {
   FiBookOpen,
   FiCheckSquare,
@@ -17,12 +17,11 @@ import {
   FiPackage,
   FiPlus,
   FiPlusCircle,
-  FiSettings,
   FiTruck,
   FiUsers,
   FiX,
 } from "react-icons/fi";
-import { RiFileHistoryFill } from "react-icons/ri";
+
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
 

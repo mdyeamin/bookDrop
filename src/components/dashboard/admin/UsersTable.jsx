@@ -5,7 +5,6 @@ import { Table, Select, ListBox, Button, Avatar } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
 
 const UsersTable = ({ users }) => {
-  // রোলের জন্য ডেডিকেটেড কালার জেনারেটর (image_796841.png এর মতো সফট পিল ব্যাজ)
   const getRoleBadgeClass = (role) => {
     switch (role?.toLowerCase()) {
       case "admin":
@@ -17,7 +16,7 @@ const UsersTable = ({ users }) => {
     }
   };
 
-  // ডেট ফরম্যাটার (Joined Date দেখানোর জন্য)
+
   const formatDate = (dateString) => {
     if (!dateString) return "Joined N/A";
     const date = new Date(dateString);
@@ -68,11 +67,14 @@ const UsersTable = ({ users }) => {
                   <Table.Cell className="py-4 pl-6">
                     <div className="flex items-center gap-3">
                       <Avatar
-                        src={user?.image}
-                        className="w-10 h-10 font-bold bg-[#0A2540]/5 text-[#0A2540]"
+                        className="w-10 h-10 font-bold bg-[#0A2540]/5 text-[#0A2540] shrink-0"
                         alt={user?.name}
                       >
-                        {user?.name?.[0]?.toUpperCase()}
+                        <Avatar.Image src={user?.image} alt={user?.name} />
+
+                        <Avatar.Fallback className="bg-[#0A2540]/5 text-[#0A2540] font-bold text-sm uppercase">
+                          {user?.name ? user?.name[0].toUpperCase() : "U"}
+                        </Avatar.Fallback>
                       </Avatar>
                       <div className="flex flex-col text-left">
                         <span className="text-[14px] font-bold text-[#0A2540] tracking-tight">
@@ -106,9 +108,7 @@ const UsersTable = ({ users }) => {
                       <Select
                         className="w-[130px]"
                         defaultValue={user?.role}
-                        
                         selectedKeys={[user?.role]}
-                       
                       >
                         <Select.Trigger className="bg-slate-100 hover:bg-slate-200 border-none rounded-lg h-8 text-[12px] font-bold px-3 transition-colors text-slate-700">
                           <Select.Value />
@@ -144,15 +144,12 @@ const UsersTable = ({ users }) => {
                         </Select.Popover>
                       </Select>
 
-                      
                       <Button
                         isIconOnly
                         size="sm"
                         variant="light"
                         className="text-rose-600 hover:bg-rose-50 rounded-lg w-8 h-8 flex items-center justify-center transition-colors"
-                        onClick={() =>
-                          console.log("Delete triggered for:", userId)
-                        }
+                        
                       >
                         <FiTrash2 size={16} strokeWidth={2.2} />
                       </Button>

@@ -1,20 +1,20 @@
-import TotalUsers from '@/components/dashboard/admin/TotalUsers';
-import UsersTable from '@/components/dashboard/admin/UsersTable';
-import { getUsers } from '@/lib/api/users';
-import React from 'react';
+import TotalUsers from "@/components/dashboard/admin/TotalUsers";
+import UsersTable from "@/components/dashboard/admin/UsersTable";
+import UserTableSkeleton from "@/components/Loading/UserTableSkeleton";
+import { getUsers } from "@/lib/api/users";
+import React, { Suspense } from "react";
 
+const UsersPage = async () => {
+  const users = await getUsers();
 
-const UsersPage = async() => {
-    const users = await  getUsers()
-    console.log(users);
-    
-    return (
-        <div>
-            <TotalUsers users={users}/>
-            <UsersTable users={users}/>
-        </div>
-    );
+  return (
+    <div>
+      <TotalUsers users={users} />
+      <Suspense fallback={<UserTableSkeleton />}>
+        <UsersTable users={users} />
+      </Suspense>
+    </div>
+  );
 };
 
 export default UsersPage;
-
