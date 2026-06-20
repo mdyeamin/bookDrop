@@ -2,18 +2,28 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 // Framer Motion
 import { motion, AnimatePresence } from "framer-motion";
 
-// Icons
 import { MdMenu, MdClose } from "react-icons/md";
+import { authClient } from "@/lib/auth-client";
+
+import ProfileModal from "../NavProfileModal";
 
 const NavBar = () => {
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
+  console.log(user);
+
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+
+  
+
   if (pathname.includes("auth")) {
     return null;
   }
@@ -78,12 +88,19 @@ const NavBar = () => {
           <div className="hidden md:flex items-center gap-6">
             <div className="flex items-center gap-5">
               {/* Sign In Link */}
-              <Link
-                href="/auth/signin"
-                className="font-bold text-[15px] text-[#0D3B66] hover:text-[#F46036] transition-colors"
-              >
-                Sign In
-              </Link>
+              {user ? (
+                <>
+                  
+                  <ProfileModal user={user}/>
+                </>
+              ) : (
+                <Link
+                  href="/auth/signin"
+                  className="font-bold text-[15px] text-[#0D3B66] hover:text-[#F46036] transition-colors"
+                >
+                  Sign In
+                </Link>
+              )}
               {/* Get Started Button */}
               <Link
                 href="/register"
@@ -96,6 +113,7 @@ const NavBar = () => {
 
           {/* --- Small Devices Mobile Menu Trigger --- */}
           <div className="flex md:hidden items-center gap-3">
+            <ProfileModal user={user}/>
             <button
               onClick={() => setIsOpen(true)}
               className="text-[#0D3B66] p-1 text-2xl focus:outline-none"
@@ -171,13 +189,13 @@ const NavBar = () => {
               {/* Mobile Drawer Action Dynamic Footer Grid */}
               <div className="w-full border-t border-gray-100 pt-5 pb-2 select-none transition-colors duration-300">
                 <div className="flex flex-col gap-3 w-full">
-                  <Link
+                  {!user && <Link
                     href="/auth/signin"
                     onClick={() => setIsOpen(false)}
                     className="text-[#0D3B66] font-bold text-[16px] h-11 rounded-md border-2 border-[#0D3B66] flex items-center justify-center transition-all whitespace-nowrap"
                   >
                     Sign In
-                  </Link>
+                  </Link>}
 
                   <Link
                     href="/register"
