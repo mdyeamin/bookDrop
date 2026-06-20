@@ -327,14 +327,14 @@ const GoogleSignIn=async()=>{
                           value="user"
                           className="font-semibold text-slate-800"
                         >
-                          Readers
+                          Reader
                         </option>
                         <option
-                          name="librarians"
-                          value="librarians"
+                          name="librarian"
+                          value="librarian"
                           className="font-semibold text-slate-800"
                         >
-                          Librarians
+                          Librarian
                         </option>
                       </select>
                       {/* কাস্টম ড্রপডাউন অ্যারো আইকন */}

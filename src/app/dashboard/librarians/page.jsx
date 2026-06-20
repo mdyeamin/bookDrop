@@ -1,11 +1,11 @@
 import React from 'react';
 
-const DashboardLibrarians = () => {
+const DashboardLibrarian = () => {
     return (
         <div>
-            Librarians
+            Librarian
         </div>
     );
 };
 
-export default DashboardLibrarians;
+export default DashboardLibrarian;

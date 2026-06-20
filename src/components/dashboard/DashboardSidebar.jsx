@@ -56,7 +56,7 @@ const DashboardSidebar = () => {
       icon: FiMessageSquare,
     },
   ];
-  const librariansNavItems = [
+  const librarianNavItems = [
     {
       name: "Overview",
       href: "/dashboard/librarian",
@@ -108,13 +108,11 @@ const DashboardSidebar = () => {
 
   const navLinksMap = {
     user: userNavItems,
-    librarians: librariansNavItems,
+    librarian: librarianNavItems,
     admin: adminNavItems,
   };
-const navItems = navLinksMap[user?.role || "user"] || {}
-// console.log("mathar upor dia jay",navItems);
-
-
+  const navItems = navLinksMap[user?.role || "user"] || {};
+  // console.log("mathar upor dia jay",navItems);
 
   return (
     <>
@@ -177,36 +175,46 @@ const navItems = navLinksMap[user?.role || "user"] || {}
           </div>
 
           {/* 2. ADMIN USER PROFILE CARD CONTAINER */}
-          <div className="flex items-center gap-3 bg-white/[0.03] backdrop-blur-md p-3 rounded-xl border border-white/[0.06] select-none hover:bg-white/[0.06] transition-colors group">
-            {/* অ্যাভাটার কন্টেইনার উইথ গ্লো ইফেক্ট */}
+          <div className="flex items-center gap-4 bg-transparent p-1 select-none w-full">
+            {/* ১. অ্যাভাটার উইথ থিক সার্কুলার রিং (image_854ccb.png এর মতো) */}
             <Avatar
               size="md"
-              className="w-10 h-10 ring-2 ring-white/10 group-hover:ring-emerald-500/30 transition-all shrink-0"
+              className={`w-12 h-12 ring-[3px] bg-transparent shrink-0 transition-all duration-300 ${
+                user?.role === "admin"
+                  ? "ring-rose-500/30"
+                  : user?.role === "librarian"
+                    ? "ring-sky-500/30"
+                    : "ring-slate-500/30"
+              }`}
             >
               <Avatar.Image
-                alt={user?.name || "User Avatar"}
+                alt={user?.name || "User Profile"}
                 src={user?.image}
               />
-              <Avatar.Fallback className="bg-emerald-500/10 text-emerald-400 font-black text-sm uppercase">
+              <Avatar.Fallback className="bg-white/10 text-white font-bold text-sm uppercase">
                 {user?.name ? user?.name[0] : "U"}
               </Avatar.Fallback>
             </Avatar>
 
-            {/* ইউজার ইনফরমেশন টেক্সট গ্রিড */}
-            <div className="flex flex-col min-w-0 flex-1 space-y-0.5">
-              <span className="text-[13px] font-black tracking-tight text-slate-100 truncate group-hover:text-white transition-colors">
+            {/* ২. টেক্সট লেআউট */}
+            <div className="flex flex-col text-left min-w-0">
+              {/* প্রথম লাইন: ইউজারের নাম */}
+              <span className="text-[16px] font-bold text-white tracking-wide leading-tight truncate">
                 {user?.name}
               </span>
-              <span className="text-[11px] font-semibold text-slate-400 truncate leading-none mb-1 block">
-                {user?.email}
-              </span>
 
-              {/* রোল আইডেন্টিফায়ার ব্যাজ (মিনিমালিস্ট ও মডার্ন লুক) */}
-              <div className="flex">
-                <span className="text-[9px] font-black tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md select-none leading-normal">
-                  {user?.role}
-                </span>
-              </div>
+              {/* দ্বিতীয় লাইন: ডাইনামিক রোল কালার (প্রফেশনাল সফট টোন) */}
+              <span
+                className={`text-[13px] font-black tracking-wider uppercase truncate mt-1 transition-colors duration-300 ${
+                  user?.role === "admin"
+                    ? "text-rose-400"
+                    : user?.role === "librarian"
+                      ? "text-sky-400"
+                      : "text-emerald-400"
+                }`}
+              >
+                {user?.role}
+              </span>
             </div>
           </div>
 
