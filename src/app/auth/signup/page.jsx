@@ -18,6 +18,8 @@ import Image from "next/image";
 // Icons
 import { FiEye, FiEyeOff, FiUploadCloud } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -30,15 +32,27 @@ const Register = () => {
   const router = useRouter();
   // console.log(role);
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
-    const payload = {
-      ...userData,
-      image: photoURL,
-    };
-    console.log(payload);
+
+    try {
+      const { data, error } = await authClient.signUp.email({
+        ...userData,
+       
+      });
+      console.log(data, error);
+      if (error) {
+        toast.error(error.message);
+      }
+      if (data) {
+        toast.success("successfully signUp ");
+      }
+    } catch (err) {
+      toast.error(err.message);
+    }
+    // console.log(payload);
   };
 
   // Handle image upload tracking
@@ -47,11 +61,10 @@ const Register = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
 
-    
       const maxSizeInBytes = 500 * 1024; // 512,000 Bytes
       if (file.size > maxSizeInBytes) {
         alert("File size is too large! Maximum allowed size is 500KB.");
-        e.target.value = ""; 
+        e.target.value = "";
         setFileName("");
         return;
       }
@@ -61,11 +74,9 @@ const Register = () => {
       try {
         setIsUploading(true);
 
-        
         const imgFormData = new FormData();
         imgFormData.append("image", file);
 
-       
         const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
         const response = await fetch(
           `https://api.imgbb.com/1/upload?key=${apiKey}`,
@@ -78,7 +89,6 @@ const Register = () => {
         const imgData = await response.json();
 
         if (imgData.success) {
-         
           setPhotoURL(imgData.data.display_url);
           console.log("imgBB Upload Success:", imgData.data.display_url);
         } else {
@@ -99,7 +109,6 @@ const Register = () => {
     <main className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-[#F8FAFC] text-slate-900 select-text relative">
       {/* --- LEFT PANEL: BRANDING & HERO IMAGE --- */}
       <div className="relative hidden lg:flex flex-col w-full min-h-screen bg-[#F8FAFC] border-r border-gray-100 overflow-hidden p-12">
-        
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <Image
             src="/SplitScreenForSignup.png"
@@ -113,7 +122,6 @@ const Register = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-[#F8FAFC]/90 z-[1]" />
         </div>
 
-        
         <div className="relative z-20 w-full self-start">
           <Link
             href="/"
@@ -130,7 +138,6 @@ const Register = () => {
           </Link>
         </div>
 
-        
         <div className="relative z-20 flex-grow flex flex-col justify-end max-w-md space-y-4 select-none pb-12">
           <h1 className="text-4xl font-extrabold text-[#0D3B66] tracking-tight leading-[1.2]">
             Streamline your <br />
@@ -142,7 +149,6 @@ const Register = () => {
           </p>
         </div>
 
-        
         <div className="relative z-20 w-full self-end pt-6">
           <div className="flex items-center gap-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider select-none">
             <Link href="#" className="hover:text-[#F46036] transition-colors">
@@ -297,11 +303,11 @@ const Register = () => {
                           Readers
                         </option>
                         <option
-                          name="librarian"
-                          value="librarian"
+                          name="librarians"
+                          value="librarians"
                           className="font-semibold text-slate-800"
                         >
-                          Providers
+                          Librarians
                         </option>
                       </select>
                       {/* কাস্টম ড্রপডাউন অ্যারো আইকন */}
