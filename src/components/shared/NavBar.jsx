@@ -33,8 +33,12 @@ const NavBar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Browse Books", path: "/browse-books" },
-    { name: "Dashboard", path: "/dashboard/user" },
   ];
+
+  if (user?.email) {
+    navLinks.push({ name: "Dashboard", path: "/dashboard/user" });
+  }
+  // { name: "Dashboard", path: "/dashboard/user" },
 
   return (
     <>

@@ -2,45 +2,119 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Avatar, Button } from "@heroui/react";
 import { BsGrid1X2 } from "react-icons/bs";
 import {
+  FiBookOpen,
+  FiCheckSquare,
+  FiCreditCard,
+  FiGrid,
   FiHelpCircle,
   FiLogOut,
   FiMenu,
+  FiMessageSquare,
   FiPackage,
   FiPlus,
+  FiPlusCircle,
   FiSettings,
+  FiTruck,
+  FiUsers,
   FiX,
 } from "react-icons/fi";
 import { RiFileHistoryFill } from "react-icons/ri";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
-// import {
-//   BsGrid1X2,
-//   FiPackage,
-//   FiHistory,
-//   FiSettings,
-//   FiPlus,
-//   FiHelpCircle,
-//   FiLogOut,
-//   FiMenu,
-//   FiX
-// } from "react-icons/fi";
 
 const DashboardSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+  const router = useRouter();
   // নেভিগেশন আইটেম লিস্ট
-  const menuItems = [
-    { name: "Overview", href: "/dashboard", icon: BsGrid1X2 },
-    { name: "Inventory", href: "/dashboard/inventory", icon: FiPackage },
-    { name: "History", href: "/dashboard/history", icon: RiFileHistoryFill },
-    { name: "Settings", href: "/dashboard/settings", icon: FiSettings },
+
+  const userNavItems = [
+    {
+      name: "Overview",
+      href: "/dashboard/user",
+      icon: FiGrid,
+    },
+    {
+      name: "Delivery History",
+      href: "/dashboard/user/delivery-history",
+      icon: FiTruck,
+    },
+    {
+      name: "My Reading List",
+      href: "/dashboard/user/reading-list",
+      icon: FiBookOpen,
+    },
+    {
+      name: "My Reviews",
+      href: "/dashboard/user/reviews",
+      icon: FiMessageSquare,
+    },
   ];
+  const librariansNavItems = [
+    {
+      name: "Overview",
+      href: "/dashboard/librarian",
+      icon: FiGrid,
+    },
+    {
+      name: "Add Book",
+      href: "/dashboard/librarian/add-book",
+      icon: FiPlusCircle,
+    },
+    {
+      name: "Manage Inventory",
+      href: "/dashboard/librarian/inventory",
+      icon: FiPackage,
+    },
+    {
+      name: "Manage Deliveries",
+      href: "/dashboard/librarian/deliveries",
+      icon: FiTruck,
+    },
+  ];
+  const adminNavItems = [
+    {
+      name: "Overview",
+      href: "/dashboard/admin",
+      icon: FiGrid,
+    },
+    {
+      name: "Book Approval Queue",
+      href: "/dashboard/admin/approvals",
+      icon: FiCheckSquare,
+    },
+    {
+      name: "Manage Users",
+      href: "/dashboard/admin/users",
+      icon: FiUsers,
+    },
+    {
+      name: "Manage All Books",
+      href: "/dashboard/admin/books",
+      icon: FiBookOpen,
+    },
+    {
+      name: "View All Transactions",
+      href: "/dashboard/admin/transactions",
+      icon: FiCreditCard,
+    },
+  ];
+
+  const navLinksMap = {
+    user: userNavItems,
+    librarians: librariansNavItems,
+    admin: adminNavItems,
+  };
+const navItems = navLinksMap[user?.role || "user"] || {}
+// console.log("mathar upor dia jay",navItems);
+
+
 
   return (
     <>
@@ -138,7 +212,7 @@ const DashboardSidebar = () => {
 
           {/* 3. DYNAMIC MENU NAVIGATION LINKS */}
           <nav className="space-y-1">
-            {menuItems.map((item) => {
+            {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
 
@@ -192,7 +266,9 @@ const DashboardSidebar = () => {
 
           <button
             type="button"
-            onClick={() => console.log("Logout action")}
+            onClick={async () =>
+              await authClient.signOut(router.push("/auth/signin"))
+            }
             className="w-full h-10 px-4 rounded-lg flex items-center gap-3 text-[13px] font-bold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all text-left bg-transparent border-none cursor-pointer"
           >
             <FiLogOut size={16} />
