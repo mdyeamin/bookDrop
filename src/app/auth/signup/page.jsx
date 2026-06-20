@@ -61,6 +61,12 @@ const SighUp = () => {
     // console.log(payload);
   };
 
+const GoogleSignIn=async()=>{
+    await authClient.signIn.social({
+    provider: "google",
+  });
+}
+
   // Handle image upload tracking
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -384,6 +390,7 @@ const SighUp = () => {
 
           {/* GOOGLE SIGN-IN BUTTON */}
           <Button
+          onClick={GoogleSignIn}
             type="button"
             variant="bordered"
             className="w-full py-3 border-gray-200 text-slate-700 hover:bg-slate-50 font-bold text-[14px] rounded-lg transition-all flex items-center justify-center gap-2 bg-transparent"
