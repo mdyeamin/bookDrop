@@ -21,7 +21,7 @@ import { FcGoogle } from "react-icons/fc";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
-const Register = () => {
+const SighUp = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [agree, setAgree] = useState(false);
   const [role, setRole] = useState("user");
@@ -40,7 +40,6 @@ const Register = () => {
     try {
       const { data, error } = await authClient.signUp.email({
         ...userData,
-       
       });
       console.log(data, error);
       if (error) {
@@ -253,7 +252,23 @@ const Register = () => {
                 {/* Password and I am a... Role Selection Grid Row (পাশাপাশি গ্রিড লেআউট) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {/* 4. PASSWORD FIELD */}
-                  <TextField className="w-full" name="password" isRequired>
+                  <TextField
+                    className="w-full"
+                    name="password"
+                    isRequired
+                    validate={(value) => {
+                      if (!value) return "Password is required";
+
+                      // Regex Rule: At least 1 uppercase, 1 lowercase, 1 number, 1 special character, min 8 chars
+                      const passwordRegex =
+                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#_\-.])[A-Z0-9a-z@$!%*?&#_\-.]{8,}$/;
+
+                      if (!passwordRegex.test(value)) {
+                        return "Must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character and be min 8 characters.";
+                      }
+                      return null;
+                    }}
+                  >
                     <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
                       Password
                     </Label>
@@ -279,7 +294,7 @@ const Register = () => {
                         </Button>
                       </InputGroup.Suffix>
                     </InputGroup>
-                    <FieldError className="text-xs font-semibold text-rose-500 mt-1 pl-1" />
+                    <FieldError className="text-xs font-semibold text-rose-500 mt-1 pl-1 max-w-[280px] sm:max-w-none block" />
                   </TextField>
 
                   {/* 6. ROLE SELECTION DROP-DOWN (DEFAULT: READERS) */}
@@ -387,4 +402,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default SighUp;
