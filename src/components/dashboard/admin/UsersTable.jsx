@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
 import { Table, Select, ListBox, Button, Avatar } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
+import { handleDeleteUser } from "@/lib/api/users";
+import { handleUpdateUserRole } from "@/lib/action/users";
 
 const UsersTable = ({ users }) => {
   const getRoleBadgeClass = (role) => {
@@ -15,7 +16,6 @@ const UsersTable = ({ users }) => {
         return "bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-[12px] font-bold border border-slate-200";
     }
   };
-
 
   const formatDate = (dateString) => {
     if (!dateString) return "Joined N/A";
@@ -34,7 +34,6 @@ const UsersTable = ({ users }) => {
           aria-label="BiblioDrop Registered Users"
           className="min-w-[800px]"
         >
-          {/* টেবিল হেডার: image_796841.png এর কলাম নেম ও স্টাইল অনুযায়ী */}
           <Table.Header>
             <Table.Column
               isRowHeader
@@ -53,17 +52,15 @@ const UsersTable = ({ users }) => {
             </Table.Column>
           </Table.Header>
 
-          {/* ডাইনামিক ইউজার ডাটা ম্যাপিং সেকশন */}
           <Table.Body>
             {users?.map((user) => {
-              const userId = user?._id?.$oid || user?._id;
+              const userId = user?._id;
 
               return (
                 <Table.Row
                   key={userId}
                   className="border-b border-gray-100/60 hover:bg-slate-50/40 transition-colors"
                 >
-                  {/* ১. ফুল নেম ও অ্যাভাটার কলাম */}
                   <Table.Cell className="py-4 pl-6">
                     <div className="flex items-center gap-3">
                       <Avatar
@@ -89,26 +86,24 @@ const UsersTable = ({ users }) => {
                     </div>
                   </Table.Cell>
 
-                  {/* ২. ইমেল এড্রেস কলাম */}
                   <Table.Cell className="py-4 text-[13px] font-medium text-slate-600">
                     {user?.email}
                   </Table.Cell>
 
-                  {/* ৩. কারেন্ট রোল পিল ব্যাজ কলাম */}
                   <Table.Cell className="py-4">
                     <span className={getRoleBadgeClass(user?.role)}>
                       {user?.role}
                     </span>
                   </Table.Cell>
 
-                  {/* ৪. অ্যাকশন কলাম (HeroUI Select এবং ডিলিট বাটন) */}
                   <Table.Cell className="py-4 pr-6 text-right">
                     <div className="flex items-center justify-end gap-3">
-                      {/* HeroUI কাস্টম রোল চেঞ্জার ড্রপডাউন */}
                       <Select
                         className="w-[130px]"
                         defaultValue={user?.role}
-                        selectedKeys={[user?.role]}
+                        
+                        onChange={(value)=>handleUpdateUserRole(userId,value)}
+                       
                       >
                         <Select.Trigger className="bg-slate-100 hover:bg-slate-200 border-none rounded-lg h-8 text-[12px] font-bold px-3 transition-colors text-slate-700">
                           <Select.Value />
@@ -144,15 +139,18 @@ const UsersTable = ({ users }) => {
                         </Select.Popover>
                       </Select>
 
-                      <Button
-                        isIconOnly
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDeleteUser(user?._id);
+                        }}
                         size="sm"
                         variant="light"
                         className="text-rose-600 hover:bg-rose-50 rounded-lg w-8 h-8 flex items-center justify-center transition-colors"
-                        
                       >
-                        <FiTrash2 size={16} strokeWidth={2.2} />
-                      </Button>
+                        <FiTrash2 size={16} />
+                      </button>
                     </div>
                   </Table.Cell>
                 </Table.Row>
