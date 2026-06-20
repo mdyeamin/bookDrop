@@ -42,13 +42,17 @@ const router = useRouter()
       if (data) {
         toast.success("Welcome back! Login successful.");
         
-        router.push("/"); 
+        router.push("/dashboard"); 
       }
     } catch (err) {
       toast.error("Authentication failed. Please check your connection.");
     }
   };
-
+const GoogleSignIn=async()=>{
+    await authClient.signIn.social({
+    provider: "google",
+  });
+}
   return (
     <main className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-[#EAECEF] bg-[radial-gradient(#cdd2d9_1px,transparent_1px)] [background-size:20px_24px] text-slate-900 select-text relative">
       {/* --- LEFT PANEL: THE FLOATING FORM CARD --- */}
@@ -183,6 +187,7 @@ const router = useRouter()
 
           {/* GOOGLE SIGN-IN BUTTON */}
           <Button
+          onClick={GoogleSignIn}
             type="button"
             variant="bordered"
             className="w-full py-3 border-gray-200 text-slate-700 hover:bg-slate-50 font-bold text-[13px] rounded-lg transition-all flex items-center justify-center gap-2 bg-transparent uppercase tracking-wider"
