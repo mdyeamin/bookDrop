@@ -25,12 +25,15 @@ const NavBar = () => {
   if (pathname.includes("auth")) {
     return null;
   }
+  if (pathname.includes("dashboard")) {
+    return null;
+  }
 
   // BookDrop Navigation Routes
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Browse Books", path: "/browse-books" },
-    { name: "Dashboard", path: "/dashboard" },
+    { name: "Dashboard", path: "/dashboard/user" },
   ];
 
   return (
