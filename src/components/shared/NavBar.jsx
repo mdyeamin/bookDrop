@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MdMenu, MdClose } from "react-icons/md";
 import { authClient } from "@/lib/auth-client";
 
-import ProfileModal from "../NavProfileModal";
+import ProfileModal from "./NavProfileModal";
 
 const NavBar = () => {
   const { data: session, isPending } = authClient.useSession();
