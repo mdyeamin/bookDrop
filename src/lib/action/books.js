@@ -10,11 +10,22 @@ export const PostBook = async (data) => {
   }
   return response;
 };
-
+// delete book
 export const handleDeleteBook = async (bookId) => {
   const response = await serverMutation(`/api/books/${bookId}`, null, "DELETE");
   if (response.deletedCount > 0) {
     redirect("/dashboard/librarian/inventory");
   }
+  return response;
+};
+
+// update book
+
+export const handleUpdateBook = async (bookId, data) => {
+  const response = await serverMutation(`/api/books/${bookId}`, data, "PATCH");
+  if (response.modifiedCount > 0) {
+    redirect("/dashboard/librarian/inventory");
+  }
+
   return response;
 };

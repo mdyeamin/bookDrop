@@ -1,4 +1,4 @@
-import BooksTable from "@/components/dashboard/admin/inventory/BooksTable";
+import BooksTable from "@/components/dashboard/librarian/BooksTable";
 import { getCurrentLibrarianBook } from "@/lib/api/books";
 import { getUserSession } from "@/lib/core/session";
 

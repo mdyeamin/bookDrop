@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiInfo } from "react-icons/fi";
-import AddNewBookForm from './AddNewBookForm';
+import AddNewBookForm from '../../../../components/dashboard/librarian/AddNewBookForm';
 import { getUserSession } from '@/lib/core/session';
 
 const AddBook = async() => {

@@ -117,7 +117,7 @@ const NavBar = () => {
 
           {/* --- Small Devices Mobile Menu Trigger --- */}
           <div className="flex md:hidden items-center gap-3">
-            <ProfileModal user={user} />
+           {user && <ProfileModal user={user} />}
             <button
               onClick={() => setIsOpen(true)}
               className="text-[#0D3B66] p-1 text-2xl focus:outline-none"

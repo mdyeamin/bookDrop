@@ -3,6 +3,7 @@
 import { Table, Button, Select, ListBox } from "@heroui/react";
 import { FiEdit2, FiTrash2, FiInfo } from "react-icons/fi";
 import { handleDeleteBook } from "@/lib/action/books";
+import { EditBookModal } from "./EditBookModal";
 
 const BooksTable = ({ books }) => {
   console.log(books);
@@ -97,9 +98,7 @@ const BooksTable = ({ books }) => {
 
                   <Table.Cell>
                     <div className="flex gap-2">
-                      <Button isIconOnly size="sm" variant="flat">
-                        <FiEdit2 size={14} />
-                      </Button>
+                      <EditBookModal book={book}/>
                       <Button
                         onClick={() => handleDeleteBook(book?._id)}
                         isIconOnly
