@@ -49,9 +49,9 @@ const SighUp = () => {
       }
       if (data) {
         toast.success("Account created successfully! Welcome aboard.");
-        // router.push("/dashboard");
-        await authClient.signOut();
-        router.push("/auth/signin");
+        
+        // await authClient.signOut();
+        router.push("/");
       }
     } catch (err) {
       toast.error(
