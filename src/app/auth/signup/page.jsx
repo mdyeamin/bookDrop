@@ -39,7 +39,7 @@ const SighUp = () => {
 
     // Basic confirm password check before sending request
     if (userData.password !== userData.confirmPassword) {
-      toast.error("Passwords do not match!");
+      toast.error("Passwords do not match password!");
       return;
     }
 

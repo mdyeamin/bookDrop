@@ -17,7 +17,7 @@ const NavBar = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
 
-  console.log(user);
+  
 
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
@@ -36,7 +36,7 @@ const NavBar = () => {
   ];
 
   if (user?.email) {
-    navLinks.push({ name: "Dashboard", path: "/dashboard/user" });
+    navLinks.push({ name: "Dashboard", path: `/dashboard/${user?.role}`});
   }
   // { name: "Dashboard", path: "/dashboard/user" },
 
