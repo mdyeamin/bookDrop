@@ -24,6 +24,7 @@ import {
 
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import SidebarSkeleton from "../Loading/SidebarSkeleton";
 
 const DashboardSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,6 +113,11 @@ const DashboardSidebar = () => {
   };
   const navItems = navLinksMap[user?.role || "user"] || {};
   // console.log("mathar upor dia jay",navItems);
+
+
+  if (isPending) {
+  return <SidebarSkeleton />; 
+}
 
   return (
     <>
