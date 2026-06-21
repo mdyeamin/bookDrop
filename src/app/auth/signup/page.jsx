@@ -23,6 +23,7 @@ import toast from "react-hot-toast";
 
 const SighUp = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [isConfirmVisible, setIsConfirmVisible] = useState(false);
   const [agree, setAgree] = useState(false);
   const [role, setRole] = useState("user");
   const [fileName, setFileName] = useState("");
@@ -30,12 +31,17 @@ const SighUp = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const router = useRouter();
-  // console.log(role);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const userData = Object.fromEntries(formData.entries());
+
+    // Basic confirm password check before sending request
+    if (userData.password !== userData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     try {
       const { data, error } = await authClient.signUp.email({
@@ -49,23 +55,18 @@ const SighUp = () => {
       }
       if (data) {
         toast.success("Account created successfully! Welcome aboard.");
-        
-        // await authClient.signOut();
         router.push("/");
       }
     } catch (err) {
-      toast.error(
-        "An unexpected error occurred. Please check your connection.",
-      );
+      toast.error("An unexpected error occurred. Please check your connection.");
     }
-    // console.log(payload);
   };
 
-const GoogleSignIn=async()=>{
+  const GoogleSignIn = async () => {
     await authClient.signIn.social({
-    provider: "google",
-  });
-}
+      provider: "google",
+    });
+  };
 
   // Handle image upload tracking
   const handleImageUpload = async (e) => {
@@ -118,7 +119,7 @@ const GoogleSignIn=async()=>{
 
   return (
     <main className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 bg-[#F8FAFC] text-slate-900 select-text relative">
-      {/* --- LEFT PANEL: BRANDING & HERO IMAGE --- */}
+      {/* LEFT PANEL: BRANDING & HERO IMAGE */}
       <div className="relative hidden lg:flex flex-col w-full min-h-screen bg-[#F8FAFC] border-r border-gray-100 overflow-hidden p-12">
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <Image
@@ -173,7 +174,7 @@ const GoogleSignIn=async()=>{
         </div>
       </div>
 
-      {/* --- RIGHT PANEL: THE FLOATING FORM CARD --- */}
+      {/* RIGHT PANEL: THE FLOATING FORM CARD */}
       <div className="w-full flex items-center justify-center p-4 sm:p-6 lg:p-8 relative bg-[#F8FAFC]">
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
@@ -199,15 +200,9 @@ const GoogleSignIn=async()=>{
 
               {/* Form Input Layout Fields */}
               <div className="space-y-4 w-full pt-1">
-                {/* --- Full Name and Email Address Fields (পাশাপাশি গ্রিড লেআউট) --- */}
+                {/* 1 & 2: FULL NAME & EMAIL ADDRESS */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {/* 1. FULL NAME FIELD */}
-                  <TextField
-                    className="w-full"
-                    isRequired
-                    name="name"
-                    type="text"
-                  >
+                  <TextField className="w-full" isRequired name="name" type="text">
                     <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
                       Full Name
                     </Label>
@@ -220,13 +215,7 @@ const GoogleSignIn=async()=>{
                     <FieldError className="text-xs font-semibold text-rose-500 mt-1 pl-1" />
                   </TextField>
 
-                  {/* 2. EMAIL ADDRESS FIELD */}
-                  <TextField
-                    className="w-full"
-                    name="email"
-                    type="email"
-                    isRequired
-                  >
+                  <TextField className="w-full" name="email" type="email" isRequired>
                     <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
                       Email Address
                     </Label>
@@ -240,43 +229,61 @@ const GoogleSignIn=async()=>{
                   </TextField>
                 </div>
 
-                {/* 3. IMAGE FILE UPLOAD FIELD */}
-                <div className="w-full">
-                  <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
-                    Avatar Image Upload
-                  </Label>
-                  <label className="border border-gray-200 hover:border-[#0D3B66] focus-within:border-[#0D3B66] focus-within:ring-1 focus-within:ring-[#0D3B66] rounded-lg overflow-hidden bg-white py-2.5 flex items-center px-4 justify-between cursor-pointer transition-colors group">
-                    <span
-                      className={`text-[13px] font-semibold truncate max-w-[80%] ${fileName ? "text-slate-800" : "text-slate-400"}`}
-                    >
-                      {fileName || "Choose file or drag here..."}
-                    </span>
-                    <FiUploadCloud className="text-slate-400 group-hover:text-[#0D3B66] size-4 transition-colors shrink-0" />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleImageUpload}
-                    />
-                  </label>
+                {/* 3 & 4: IMAGE UPLOAD & ROLE SELECTION (Side by Side) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="w-full">
+                    <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
+                      Avatar Image Upload
+                    </Label>
+                    <label className="border border-gray-200 hover:border-[#0D3B66] focus-within:border-[#0D3B66] focus-within:ring-1 focus-within:ring-[#0D3B66] rounded-lg overflow-hidden bg-white py-2.5 flex items-center px-4 justify-between cursor-pointer transition-colors group">
+                      <span className={`text-[13px] font-semibold truncate max-w-[80%] ${fileName ? "text-slate-800" : "text-slate-400"}`}>
+                        {fileName || "Choose file or drag here..."}
+                      </span>
+                      <FiUploadCloud className="text-slate-400 group-hover:text-[#0D3B66] size-4 transition-colors shrink-0" />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                  </div>
+
+                  <div className="w-full">
+                    <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
+                      I am a...
+                    </Label>
+                    <div className="relative group">
+                      <select
+                        name="role"
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                        className="w-full py-2.5 border border-gray-200 rounded-lg bg-white px-4 text-[13px] font-semibold text-slate-800 outline-none focus:border-[#0D3B66] focus:ring-1 focus:ring-[#0D3B66] appearance-none cursor-pointer transition-colors"
+                        defaultValue="user"
+                      >
+                        <option name="user" value="user" className="font-semibold text-slate-800">
+                          Reader
+                        </option>
+                        <option name="librarian" value="librarian" className="font-semibold text-slate-800">
+                          Librarian
+                        </option>
+                      </select>
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none border-l-[5px] border-r-[5px] border-t-[5px] border-transparent border-t-slate-400 group-focus-within:border-t-[#0D3B66] transition-colors w-0 h-0" />
+                    </div>
+                  </div>
                 </div>
 
-                {/* Password and I am a... Role Selection Grid Row (পাশাপাশি গ্রিড লেআউট) */}
+                {/* 5 & 6: PASSWORD & CONFIRM PASSWORD (Side by Side) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  {/* 4. PASSWORD FIELD */}
                   <TextField
                     className="w-full"
                     name="password"
                     isRequired
                     validate={(value) => {
                       if (!value) return "Password is required";
-
-                      // Regex Rule: At least 1 uppercase, 1 lowercase, 1 number, 1 special character, min 8 chars
-                      const passwordRegex =
-                        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#_\-.])[A-Z0-9a-z@$!%*?&#_\-.]{8,}$/;
-
+                      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#_\-.])[A-Z0-9a-z@$!%*?&#_\-.]{8,}$/;
                       if (!passwordRegex.test(value)) {
-                        return "Must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character and be min 8 characters.";
+                        return "Must contain at least 1 uppercase, 1 lowercase, 1 number, 1 special character and be min 8 characters.";
                       }
                       return null;
                     }}
@@ -298,52 +305,40 @@ const GoogleSignIn=async()=>{
                           className="text-slate-400 hover:text-slate-600 rounded-md min-w-0 p-0 bg-transparent"
                           onPress={() => setIsVisible(!isVisible)}
                         >
-                          {isVisible ? (
-                            <FiEyeOff size={16} />
-                          ) : (
-                            <FiEye size={16} />
-                          )}
+                          {isVisible ? <FiEyeOff size={16} /> : <FiEye size={16} />}
                         </Button>
                       </InputGroup.Suffix>
                     </InputGroup>
                     <FieldError className="text-xs font-semibold text-rose-500 mt-1 pl-1 max-w-[280px] sm:max-w-none block" />
                   </TextField>
 
-                  {/* 6. ROLE SELECTION DROP-DOWN (DEFAULT: READERS) */}
-                  <div className="w-full">
+                  <TextField className="w-full" name="confirmPassword" isRequired>
                     <Label className="text-[10px] font-black text-[#0D3B66] tracking-widest uppercase mb-1.5 block">
-                      I am a...
+                      Confirm Password
                     </Label>
-                    <div className="relative group">
-                      <select
-                        name="role"
-                        onChange={(e) => setRole(e.target.value)}
-                        required
-                        className="w-full py-2.5 border border-gray-200 rounded-lg bg-white px-4 text-[13px] font-semibold text-slate-800 outline-none focus:border-[#0D3B66] focus:ring-1 focus:ring-[#0D3B66] appearance-none cursor-pointer transition-colors"
-                        defaultValue="user"
-                      >
-                        <option
-                          name="user"
-                          value="user"
-                          className="font-semibold text-slate-800"
+                    <InputGroup className="border border-gray-200 focus-within:border-[#0D3B66] focus-within:ring-1 focus-within:ring-[#0D3B66] rounded-lg overflow-hidden bg-white ">
+                      <InputGroup.Input
+                        className="bg-transparent pl-4 pr-1 text-[13px] font-semibold text-slate-800 placeholder:text-slate-300 w-full outline-none"
+                        type={isConfirmVisible ? "text" : "password"}
+                        placeholder="••••••••"
+                      />
+                      <InputGroup.Suffix className="pr-1.5">
+                        <Button
+                          isIconOnly
+                          size="sm"
+                          variant="light"
+                          className="text-slate-400 hover:text-slate-600 rounded-md min-w-0 p-0 bg-transparent"
+                          onPress={() => setIsConfirmVisible(!isConfirmVisible)}
                         >
-                          Reader
-                        </option>
-                        <option
-                          name="librarian"
-                          value="librarian"
-                          className="font-semibold text-slate-800"
-                        >
-                          Librarian
-                        </option>
-                      </select>
-                      {/* কাস্টম ড্রপডাউন অ্যারো আইকন */}
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none border-l-[5px] border-r-[5px] border-t-[5px] border-transparent border-t-slate-400 group-focus-within:border-t-[#0D3B66] transition-colors w-0 h-0" />
-                    </div>
-                  </div>
+                          {isConfirmVisible ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                        </Button>
+                      </InputGroup.Suffix>
+                    </InputGroup>
+                    <FieldError className="text-xs font-semibold text-rose-500 mt-1 pl-1 max-w-[280px] sm:max-w-none block" />
+                  </TextField>
                 </div>
 
-                {/* 7. PRIVACY POLICY CHECKBOX SIMULATION */}
+                {/* 7. PRIVACY POLICY CHECKBOX */}
                 <div className="flex items-start gap-2.5 pt-1 select-none">
                   <input
                     onChange={() => setAgree(!agree)}
@@ -390,7 +385,7 @@ const GoogleSignIn=async()=>{
 
           {/* GOOGLE SIGN-IN BUTTON */}
           <Button
-          onClick={GoogleSignIn}
+            onClick={GoogleSignIn}
             type="button"
             variant="bordered"
             className="w-full py-3 border-gray-200 text-slate-700 hover:bg-slate-50 font-bold text-[14px] rounded-lg transition-all flex items-center justify-center gap-2 bg-transparent"
