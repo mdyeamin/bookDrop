@@ -1,8 +1,14 @@
 import React from 'react';
 import { FiInfo } from "react-icons/fi";
 import AddNewBookForm from './AddNewBookForm';
+import { getUserSession } from '@/lib/core/session';
 
-const AddBook = () => {
+const AddBook = async() => {
+    const user = await getUserSession();
+    
+      const userId = user?.user?.id;
+      console.log(userId);
+      
     return (
         <div className="p-6 max-w-4xl mx-auto w-full">
             {/* Header Design matching your image */}
@@ -20,7 +26,7 @@ const AddBook = () => {
             </div>
 
             {/* Your remaining content */}
-            <AddNewBookForm/>
+            <AddNewBookForm userId={userId}/>
         </div>
     );
 };

@@ -2,8 +2,8 @@
 
 import { Table, Select, ListBox, Button, Avatar } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
-import { handleDeleteUser } from "@/lib/api/users";
-import { handleUpdateUserRole } from "@/lib/action/users";
+
+import { handleDeleteUser, handleUpdateUserRole } from "@/lib/action/users";
 
 const UsersTable = ({ users }) => {
   const getRoleBadgeClass = (role) => {
@@ -101,9 +101,9 @@ const UsersTable = ({ users }) => {
                       <Select
                         className="w-[130px]"
                         defaultValue={user?.role}
-                        
-                        onChange={(value)=>handleUpdateUserRole(userId,value)}
-                       
+                        onChange={(value) =>
+                          handleUpdateUserRole(userId, value)
+                        }
                       >
                         <Select.Trigger className="bg-slate-100 hover:bg-slate-200 border-none rounded-lg h-8 text-[12px] font-bold px-3 transition-colors text-slate-700">
                           <Select.Value />

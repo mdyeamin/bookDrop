@@ -16,12 +16,26 @@ import { FiUploadCloud, FiSend, FiShield, FiTruck } from "react-icons/fi";
 import toast from "react-hot-toast";
 import { PostBook } from "@/lib/action/books";
 
-const AddNewBookForm = () => {
+const AddNewBookForm = (userId) => {
   const [fileName, setFileName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const categoryOptions = [
+    { id: "Fiction", label: "Fiction" },
+    { id: "Sci-Fi", label: "Sci-Fi" },
+    { id: "Fantasy", label: "Fantasy" },
+    { id: "Mystery-Thriller", label: "Mystery & Thriller" },
+    { id: "Romance", label: "Romance" },
+    { id: "Academic", label: "Academic" },
+    { id: "History", label: "History" },
+    { id: "Biography", label: "Biography" },
+    { id: "Self-Help", label: "Self-Help" },
+    { id: "Business", label: "Business & Economics" },
+    { id: "Children", label: "Children's Books" },
+    { id: "Poetry", label: "Poetry" },
+  ];
   // 1. Image Upload & Validation Logic (Similar to Sign Up Page)
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -99,6 +113,7 @@ const AddNewBookForm = () => {
       ...bookData,
       image: photoURL,
       status: "pending",
+      ...userId,
     };
     const res = await PostBook(finalSubmitData);
 
@@ -178,32 +193,18 @@ const AddNewBookForm = () => {
                     <Select.Value className="text-[13px] font-semibold text-slate-800 placeholder:text-slate-300" />
                     <Select.Indicator className="text-slate-400" />
                   </Select.Trigger>
+
                   <Select.Popover>
-                    <ListBox>
-                      <ListBox.Item id="Fiction" textValue="Fiction">
-                        <span className="font-semibold text-slate-800">
-                          Fiction
-                        </span>
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Sci-Fi" textValue="Sci-Fi">
-                        <span className="font-semibold text-slate-800">
-                          Sci-Fi
-                        </span>
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Academic" textValue="Academic">
-                        <span className="font-semibold text-slate-800">
-                          Academic
-                        </span>
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
-                      <ListBox.Item id="Biography" textValue="Biography">
-                        <span className="font-semibold text-slate-800">
-                          Biography
-                        </span>
-                        <ListBox.ItemIndicator />
-                      </ListBox.Item>
+                    {/* Dynamic Array Mapping */}
+                    <ListBox items={categoryOptions}>
+                      {(item) => (
+                        <ListBox.Item id={item.id} textValue={item.label}>
+                          <span className="font-semibold text-slate-800">
+                            {item.label}
+                          </span>
+                          <ListBox.ItemIndicator />
+                        </ListBox.Item>
+                      )}
                     </ListBox>
                   </Select.Popover>
                 </Select>
