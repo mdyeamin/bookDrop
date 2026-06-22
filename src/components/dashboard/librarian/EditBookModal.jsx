@@ -82,12 +82,8 @@ export function EditBookModal({ book }) {
       ...updatedData,
       image: photoURL,
     };
-    // console.log(book?._id);
 
     await handleUpdateBook(book?._id, payload);
-    
-    
-    
   };
 
   return (
