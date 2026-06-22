@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import { getUserSession } from "@/lib/core/session";
 
+
 export async function POST(request) {
   try {
     const headersList = await headers();
@@ -13,6 +14,8 @@ export async function POST(request) {
     const price = formData.get("price");
     const title = formData.get("title");
     const productId = formData.get("productId");
+
+    
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
@@ -32,10 +35,10 @@ export async function POST(request) {
       ],
       metadata: {
         price: Number(price),
-        userId: user?.id,
-        userEmail: user?.email,
+        userId: user?.user?.id,
+        userEmail: user?.user?.email,
         title,
-        productId,
+        productId:productId,
       },
       mode: "payment",
       success_url: `${origin}/pricing/success?session_id={CHECKOUT_SESSION_ID}`,

@@ -165,8 +165,8 @@ console.log(book)
             <div className="flex flex-wrap items-center gap-4 mb-12">
               <form action={'/api/payment'}method='POST'>
                 <input type="hidden" name="price" value={(book.deliveryFee)} />
-                <input type="hidden" name="title" value={book.title} />
-                <input type="hidden" name="productId" value={book._id} />
+                <input type="hidden" name="title" value={book?.title} />
+                <input type="hidden" name="productId" value={book?._id} />
                 <Button  type='submit'
                 size="lg"
                 isDisabled={!isAvailable}
