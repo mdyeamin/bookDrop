@@ -101,7 +101,7 @@ const UsersTable = ({ users }) => {
                       <Select
                         className="w-[130px]"
                         defaultValue={user?.role}
-                        onChange={(value) =>
+                        onSelectionChange={(value) =>
                           handleUpdateUserRole(userId, value)
                         }
                       >

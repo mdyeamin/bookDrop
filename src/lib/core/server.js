@@ -1,8 +1,8 @@
 "use server";
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
 export const serverFetch = async (path) => {
-  const res = await fetch(`${baseUrl}${path}`);
-  const data = res.json();
+  const res = await fetch(`${baseUrl}${path}`,{cache: 'no-store'});
+  const data = await res.json();
   return data;
 };
 
@@ -11,6 +11,7 @@ export const serverMutation = async (path, data, method = "POST") => {
   console.log("dsfdsf", url);
 
   const res = await fetch(`${baseUrl}${path}`, {
+   
     method: method,
     headers: {
       "content-type": "application/json",
@@ -20,5 +21,5 @@ export const serverMutation = async (path, data, method = "POST") => {
   });
  
 
-  return res.json();
+  return await  res.json();
 };

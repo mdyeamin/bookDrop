@@ -1,3 +1,4 @@
+
 import { getBookById } from '@/lib/api/books';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,7 +11,7 @@ import { Button } from '@heroui/react';
 const BookDetailsPage = async ({ params }) => {
   const { id } = await params;
   const book = await getBookById(id);
-
+console.log(book)
   if (!book) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center text-[#0A2540] font-bold text-2xl">
@@ -162,7 +163,11 @@ const BookDetailsPage = async ({ params }) => {
 
             {/* Main Call to Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 mb-12">
-              <Button 
+              <form action={'/api/payment'}method='POST'>
+                <input type="hidden" name="price" value={(book.deliveryFee)} />
+                <input type="hidden" name="title" value={book.title} />
+                <input type="hidden" name="productId" value={book._id} />
+                <Button  type='submit'
                 size="lg"
                 isDisabled={!isAvailable}
                 className={`text-white font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors shadow-sm ${
@@ -172,6 +177,7 @@ const BookDetailsPage = async ({ params }) => {
                 <BsTruck size={18} strokeWidth={0.5} />
                 {isAvailable ? 'Request Delivery' : 'Currently Unavailable'}
               </Button>
+              </form>
               <Button 
                 size="lg"
                 variant="bordered"
