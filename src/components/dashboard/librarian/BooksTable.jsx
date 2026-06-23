@@ -6,6 +6,16 @@ import { handleDeleteBook } from "@/lib/action/books";
 import { EditBookModal } from "./EditBookModal";
 
 const BooksTable = ({ books }) => {
+  const editButton = (
+    <Button
+      isIconOnly
+      size="sm"
+      variant="flat"
+      className="text-slate-600 hover:text-[#0A2540]"
+    >
+      <FiEdit2 size={16} />
+    </Button>
+  );
   console.log(books);
   //   const handleStatusChange = (bookId, newStatus) => {
   //     setBooks(
@@ -56,13 +66,11 @@ const BooksTable = ({ books }) => {
                   </Table.Cell>
 
                   <Table.Cell>
-                    {
-                       new Date(book.createdAt).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                     }
+                    {new Date(book.createdAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </Table.Cell>
 
                   <Table.Cell>
@@ -98,7 +106,7 @@ const BooksTable = ({ books }) => {
 
                   <Table.Cell>
                     <div className="flex gap-2">
-                      <EditBookModal book={book}/>
+                      <EditBookModal book={book} editButton={editButton} />
                       <Button
                         onClick={() => handleDeleteBook(book?._id)}
                         isIconOnly

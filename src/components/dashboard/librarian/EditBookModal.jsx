@@ -11,11 +11,11 @@ import {
   ListBox,
   Form,
 } from "@heroui/react";
-import { FiEdit2, FiSave, FiUpload } from "react-icons/fi";
+import {  FiSave, FiUpload } from "react-icons/fi";
 import Image from "next/image";
 import { handleUpdateBook } from "@/lib/action/books";
 
-export function EditBookModal({ book }) {
+export function EditBookModal({ book,editButton }) {
   const [photoURL, setPhotoURL] = useState(book.image);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -88,14 +88,7 @@ export function EditBookModal({ book }) {
 
   return (
     <Modal>
-      <Button
-        isIconOnly
-        size="sm"
-        variant="flat"
-        className="text-slate-600 hover:text-[#0A2540]"
-      >
-        <FiEdit2 size={16} />
-      </Button>
+      {editButton}
 
       <Modal.Backdrop>
         <Modal.Container placement="center">
