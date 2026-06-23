@@ -1,9 +1,14 @@
 import { redirect } from "next/navigation";
 import { serverMutation } from "../core/server";
 
+import { authClient } from "../auth-client";
+
 // a librarian can post books
 export const PostBook = async (data) => {
-  const response = await serverMutation("/api/books", data);
+  const { data: token } = await authClient.token();
+  console.log(token.token);
+
+  const response = await serverMutation("/api/books", data ,"POST" ,token);
   console.log(" after post book ", response);
   if (response.insertedId) {
     redirect("/dashboard/librarian/inventory");

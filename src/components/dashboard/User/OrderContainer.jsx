@@ -82,7 +82,7 @@ const OrderContainer = ({ myOrder }) => {
                   {order.title || "Unknown Title"}
                 </h3>
                 <p className="text-sm text-slate-500 mb-6 flex-grow">
-                  {order.author || "Unknown Author"}
+                  {order.bookDetails.author || "Unknown Author"}
                 </p>
 
                 {/* Status Footer */}
