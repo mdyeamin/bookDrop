@@ -7,6 +7,7 @@ import React from "react";
 const inventoryPage = async () => {
   const user = await getUserSession();
 
+
   const userId = user?.user?.id;
 
   const books = await getCurrentLibrarianBook(userId);
