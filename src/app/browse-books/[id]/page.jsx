@@ -297,7 +297,7 @@ console.log(book._id)
                     <FiEyeOff size={13} />
                     Unpublish
                   </Button>
-                  <DeleteButton id={book._id}/>
+                  <DeleteButton id={book._id.toString()}/>
                 </div>
               </div>
             )}
