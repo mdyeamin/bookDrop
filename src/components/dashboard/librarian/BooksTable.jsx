@@ -4,7 +4,6 @@ import { Table, Button, Select, ListBox } from "@heroui/react";
 import { FiEdit2, FiTrash2, FiInfo } from "react-icons/fi";
 import { handleDeleteBook } from "@/lib/action/books";
 import { EditBookModal } from "./EditBookModal";
-import Image from "next/image";
 
 const BooksTable = ({ books }) => {
   const editButton = (
@@ -54,8 +53,7 @@ const BooksTable = ({ books }) => {
                 <Table.Row key={book._id}>
                   <Table.Cell>
                     <div className="flex items-center gap-4">
-                      <Image
-                      width={100}height={100}
+                      <img
                         src={book.image}
                         alt={book.title}
                         className="w-10 h-14 object-cover rounded shadow-sm"

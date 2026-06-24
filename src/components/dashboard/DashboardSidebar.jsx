@@ -96,7 +96,7 @@ const DashboardSidebar = () => {
     },
     {
       name: "Manage All Books",
-      href: "/dashboard/admin/books",
+      href: "/dashboard/admin/manage-all-books",
       icon: FiBookOpen,
     },
     {

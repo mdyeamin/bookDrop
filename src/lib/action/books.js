@@ -39,3 +39,13 @@ export const handleUpdateBook = async (bookId, data) => {
 
   return response;
 };
+
+
+// manage books by admin ****************
+
+export const updateBookStatusByAdmin=async(bookId,data)=>{
+  const response =await serverMutation(`/api/books/${bookId}`,data,"PATCH", token)
+  return response
+} 
+
+// manage books by admin ****************
