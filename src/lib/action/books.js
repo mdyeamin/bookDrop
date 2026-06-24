@@ -17,7 +17,10 @@ export const PostBook = async (data) => {
 };
 // delete book
 export const handleDeleteBook = async (bookId) => {
-  const response = await serverMutation(`/api/books/${bookId}`, null, "DELETE");
+  const { data: token } = await authClient.token();
+  console.log(token.token);
+
+  const response = await serverMutation(`/api/books/${bookId}`, null, "DELETE" ,token);
   if (response.deletedCount > 0) {
     redirect("/dashboard/librarian/inventory");
   }
@@ -27,6 +30,7 @@ export const handleDeleteBook = async (bookId) => {
 // update book
 
 export const handleUpdateBook = async (bookId, data) => {
+  
   const response = await serverMutation(`/api/books/${bookId}`, data, "PATCH");
   if (response.modifiedCount > 0) {
     redirect("/dashboard/librarian/inventory");
