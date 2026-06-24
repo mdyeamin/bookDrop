@@ -2,15 +2,10 @@ import { getBookById } from "@/lib/api/books";
 import Image from "next/image";
 import Link from "next/link";
 import { BsTruck } from "react-icons/bs";
+import { IoMdLogIn } from "react-icons/io";
 import { BiBookOpen, BiCalendar } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
-import {
-  FiChevronRight,
-  FiBookmark,
-  FiEdit2,
-  FiEyeOff,
-  FiTrash2,
-} from "react-icons/fi";
+import { FiChevronRight, FiBookmark, FiEdit2, FiEyeOff } from "react-icons/fi";
 import { Button } from "@heroui/react";
 import { getDeliveryOrder } from "@/lib/api/order";
 import { getUserSession } from "@/lib/core/session";
@@ -20,8 +15,11 @@ import DeleteButton from "./DeleteButton";
 const BookDetailsPage = async ({ params }) => {
   const { id } = await params;
   const book = await getBookById(id);
-  const { user } = await getUserSession();
-console.log(book._id)
+
+  const userSession = await getUserSession();
+  const user = userSession?.user;
+
+  console.log(book._id);
   if (!book) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center text-[#0A2540] font-bold text-2xl">
@@ -67,7 +65,7 @@ console.log(book._id)
     statusColor = isGloballyAvailable ? "bg-[#FF5A36]" : "bg-slate-400";
   } else if (hasAlreadyRequested) {
     statusText = "Already Requested";
-    statusColor = "bg-blue-500"; 
+    statusColor = "bg-blue-500";
   } else if (!isGloballyAvailable) {
     statusText = "Checked Out";
     statusColor = "bg-slate-400";
@@ -235,26 +233,43 @@ console.log(book._id)
             </div>
 
             {/* Main Call to Action Buttons */}
-            {/* Main Call to Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 mb-12">
               {canRequest ? (
-                <form action={"/api/payment"} method="POST">
-                  <input type="hidden" name="price" value={book.deliveryFee} />
-                  <input type="hidden" name="title" value={book.title} />
-                  <input
-                    type="hidden"
-                    name="productId"
-                    value={book._id.toString()}
-                  />
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="bg-[#FA5D39] hover:bg-[#E54823] text-white font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors shadow-sm"
-                  >
-                    <BsTruck size={18} strokeWidth={0.5} />
-                    Request Delivery
-                  </Button>
-                </form>
+                user ? (
+                  <form action={"/api/payment"} method="POST">
+                    <input
+                      type="hidden"
+                      name="price"
+                      value={book.deliveryFee}
+                    />
+                    <input type="hidden" name="title" value={book.title} />
+                    <input
+                      type="hidden"
+                      name="productId"
+                      value={book._id.toString()}
+                    />
+
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="bg-[#FA5D39] hover:bg-[#E54823] text-white font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors shadow-sm"
+                    >
+                      <BsTruck size={18} strokeWidth={0.5} />
+                      Request Delivery
+                    </Button>
+                  </form>
+                ) : (
+                  <Link href={"/auth/signin"}>
+                    <Button
+                      type="button"
+                      size="lg"
+                      className="bg-[#FA5D39] hover:bg-[#E54823] text-white font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors shadow-sm"
+                    >
+                      <IoMdLogIn size={18} strokeWidth={0.5} />
+                      Please Login
+                    </Button>
+                  </Link>
+                )
               ) : (
                 <Button
                   size="lg"
@@ -270,14 +285,14 @@ console.log(book._id)
                 </Button>
               )}
 
-              <Button
+              {user&& <Button
                 size="lg"
                 variant="bordered"
                 className="bg-white border-slate-300 text-[#0A2540] hover:bg-slate-50 font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors"
               >
                 <FiBookmark size={18} />
                 Save for Later
-              </Button>
+              </Button>}
             </div>
 
             {/* Provider Operations Divider & Admin Actions */}
@@ -297,7 +312,7 @@ console.log(book._id)
                     <FiEyeOff size={13} />
                     Unpublish
                   </Button>
-                  <DeleteButton id={book._id.toString()}/>
+                  <DeleteButton id={book._id.toString()} />
                 </div>
               </div>
             )}

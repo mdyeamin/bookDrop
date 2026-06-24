@@ -4,6 +4,7 @@ import { Table, Button, Select, ListBox } from "@heroui/react";
 import { FiEdit2, FiTrash2, FiInfo } from "react-icons/fi";
 import { handleDeleteBook } from "@/lib/action/books";
 import { EditBookModal } from "./EditBookModal";
+import Image from "next/image";
 
 const BooksTable = ({ books }) => {
   const editButton = (
@@ -53,7 +54,8 @@ const BooksTable = ({ books }) => {
                 <Table.Row key={book._id}>
                   <Table.Cell>
                     <div className="flex items-center gap-4">
-                      <img
+                      <Image
+                      width={100}height={100}
                         src={book.image}
                         alt={book.title}
                         className="w-10 h-14 object-cover rounded shadow-sm"
@@ -76,7 +78,7 @@ const BooksTable = ({ books }) => {
                   <Table.Cell>
                     {book.status === "pending" ? (
                       <div className="inline-flex items-center gap-1 bg-orange-50 text-orange-700 px-2 py-1 rounded text-[11px] font-bold uppercase tracking-wide">
-                        <FiInfo size={12} /> Pending Approval
+                        <FiInfo size={12} />{book.status}
                       </div>
                     ) : (
                       <Select

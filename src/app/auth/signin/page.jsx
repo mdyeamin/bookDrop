@@ -65,6 +65,7 @@ const SignIn = () => {
         >
           {/* Top Logo */}
           <div className="relative w-[140px] h-[36px] mb-8 select-none">
+            <Link href={'/'}>
             <Image
               src="/BookDrop.png"
               alt="BookDrop Logo"
@@ -72,6 +73,7 @@ const SignIn = () => {
               className="object-contain"
               priority
             />
+            </Link>
           </div>
 
           <Form

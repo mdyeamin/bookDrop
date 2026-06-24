@@ -6,6 +6,8 @@ import { FiTrash2 } from "react-icons/fi";
 import { handleDeleteUser, handleUpdateUserRole } from "@/lib/action/users";
 
 const UsersTable = ({ users }) => {
+  
+  
   const getRoleBadgeClass = (role) => {
     switch (role?.toLowerCase()) {
       case "admin":
