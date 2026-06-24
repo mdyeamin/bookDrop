@@ -114,7 +114,7 @@ const BooksTable = ({ books }) => {
                           size="sm"
                           className="font-semibold text-xs bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-100/80 shadow-sm hover:shadow transition-all duration-200 rounded-full px-5 active:scale-95"
                           onClick={() =>
-                            unpublishBookByLibrarian(book._id, "unpublish")
+                            unpublishBookByLibrarian(book._id, "unpublished")
                           }
                         >
                           Unpublish

@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Table, Button, Select, ListBox } from "@heroui/react";
 import { FiTrash2 } from "react-icons/fi";
 import Image from "next/image";
-import { updateBookStatusByAdmin } from "@/lib/action/books";
+import { handleDeleteBookByAdmin, updateBookStatusByAdmin } from "@/lib/action/books";
 
 const BooksTable = ({ initialBooks }) => {
-  const [books, setBooks] = useState(initialBooks || []);
+  const books = initialBooks
 
-  // শুধু ডিজাইনের জন্য স্ট্যাটাস অনুযায়ী কালার বের করার ফাংশন
+ 
   const getStatusColorClass = (status) => {
     switch (status?.toLowerCase()) {
       case "approved":
@@ -25,25 +25,8 @@ const BooksTable = ({ initialBooks }) => {
     }
   };
 
-  const handleStatusChange = async (bookId, newStatusKeys) => {
-    const newStatus = Array.from(newStatusKeys)[0];
-    if (!newStatus) return;
 
-    setBooks((prevBooks) =>
-      prevBooks.map((book) =>
-        book._id === bookId ? { ...book, status: newStatus } : book,
-      ),
-    );
-  };
-
-  const handleDelete = async (bookId) => {
-    const isConfirm = window.confirm(
-      "Are you sure you want to completely delete this book?",
-    );
-    if (!isConfirm) return;
-
-    setBooks((prevBooks) => prevBooks.filter((book) => book._id !== bookId));
-  };
+ 
 
   return (
     <div className="w-full bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm mt-6">
@@ -92,7 +75,7 @@ const BooksTable = ({ initialBooks }) => {
 
                   <Table.Cell>
                     <p className="text-sm text-slate-700 font-medium">
-                      ৳{book.deliveryFee}
+                     ${book.deliveryFee}
                     </p>
                   </Table.Cell>
 
@@ -135,8 +118,8 @@ const BooksTable = ({ initialBooks }) => {
 
                   <Table.Cell>
                     <Button
-                      onClick={() => handleDelete(book._id)}
-                      isIconOnly
+                      onClick={() => handleDeleteBookByAdmin(book?._id)}
+                      
                       size="sm"
                       variant="flat"
                       color="danger"

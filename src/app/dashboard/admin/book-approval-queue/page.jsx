@@ -1,4 +1,4 @@
-import BooksTable from '@/components/dashboard/admin/manageAllBooks/BooksTable';
+import BooksTable from '@/components/dashboard/admin/BookApprovalQueue/BooksTable';
 import { getAllBooks } from '@/lib/api/books'; // আপনার API ফাইল
 import React from 'react';
 

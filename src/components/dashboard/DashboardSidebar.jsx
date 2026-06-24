@@ -86,7 +86,7 @@ const DashboardSidebar = () => {
     },
     {
       name: "Book Approval Queue",
-      href: "/dashboard/admin/approvals",
+      href: "/dashboard/admin/book-approval-queue",
       icon: FiCheckSquare,
     },
     {

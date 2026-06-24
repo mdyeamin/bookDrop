@@ -70,10 +70,19 @@ export const updateBookStatusByAdmin=async(bookId,data)=>{
   console.log(response);
   if(response.modifiedCount >0){
 
-    redirect('/dashboard/admin/manage-all-books')
+    redirect('/dashboard/admin/book-approval-queue')
   }
   
   return response
 } 
-
+export const handleDeleteBookByAdmin = async (userId) => {
+  
+  const { data: {token} } = await authClient.token();
+    console.log(token);
+  const response = await serverMutation(`/api/admin/books/${userId}`, null, "DELETE",token);
+  if (response.deletedCount > 0) {
+    redirect("/dashboard/admin/book-approval-queue");
+  }
+  return response;
+};
 // manage books by admin ****************
