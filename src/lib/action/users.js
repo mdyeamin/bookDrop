@@ -20,7 +20,7 @@ return response;
 
 export const handleDeleteUser = async (userId) => {
   const { data: {token} } = await authClient.token();
-    console.log(toke);
+    console.log(token);
   const response = await serverMutation(`/api/users/${userId}`, null, "DELETE",token);
   if (response.deletedCount > 0) {
     redirect("/dashboard/admin/users");
