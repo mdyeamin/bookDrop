@@ -28,6 +28,8 @@ export const handleDeleteBook = async (bookId) => {
   return response;
 };
 
+
+
 // librarian can update book
 
 export const handleUpdateBook = async (bookId, data) => {
@@ -40,6 +42,23 @@ export const handleUpdateBook = async (bookId, data) => {
 
   return response;
 };
+
+// a librarian can unpublish books
+
+export const unpublishBookByLibrarian=async(bookId,data)=>{
+  const { data: {token} } = await authClient.token();
+  console.log(token);
+  const response =await serverMutation(`/api/books/${bookId}`,{status:data},"PATCH", token)
+  console.log(response);
+  if(response.modifiedCount >0){
+
+    redirect('/dashboard/librarian/inventory')
+  }
+  
+  return response
+} 
+
+
 
 
 // manage books by admin ****************

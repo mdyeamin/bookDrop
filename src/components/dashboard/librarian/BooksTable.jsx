@@ -1,9 +1,11 @@
 "use client";
 
-import { Table, Button, Select, ListBox } from "@heroui/react";
+import { Table, Button } from "@heroui/react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
-import { handleDeleteBook } from "@/lib/action/books";
+import { handleDeleteBook, unpublishBookByLibrarian } from "@/lib/action/books";
+
 import { EditBookModal } from "./EditBookModal";
+import Image from "next/image";
 
 const BooksTable = ({ books }) => {
   const editButton = (
@@ -17,9 +19,6 @@ const BooksTable = ({ books }) => {
     </Button>
   );
 
-  console.log(books);
-
-  // শুধুমাত্র ডিজাইনের জন্য স্ট্যাটাস অনুযায়ী কালার বের করার ফাংশন
   const getStatusColorClass = (status) => {
     switch (status?.toLowerCase()) {
       case "approved":
@@ -29,6 +28,7 @@ const BooksTable = ({ books }) => {
       case "rejected":
         return "bg-rose-50 text-rose-700 border border-rose-100";
       case "unpublished":
+      case "unpublish":
         return "bg-slate-100 text-slate-600 border border-slate-200";
       default:
         return "bg-slate-100 text-slate-600 border border-slate-200";
@@ -60,88 +60,107 @@ const BooksTable = ({ books }) => {
             </Table.Header>
 
             <Table.Body>
-              {books.map((book) => (
-                <Table.Row key={book._id}>
-                  <Table.Cell>
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={book.image}
-                        alt={book.title}
-                        className="w-10 h-14 object-cover rounded shadow-sm"
-                      />
-                      <div>
-                        <p className="font-bold text-slate-800">{book.title}</p>
-                        <p className="text-xs text-slate-500">{book.author}</p>
+              {books.map((book) => {
+                const status = book?.status?.toLowerCase();
+
+                return (
+                  <Table.Row key={book._id}>
+                    {/* BOOK DETAILS */}
+                    <Table.Cell>
+                      <div className="flex items-center gap-4">
+                        <Image
+                          width={100}
+                          height={100}
+                          src={book.image}
+                          alt={book.title}
+                          className="w-10 h-14 object-cover rounded shadow-sm"
+                        />
+                        <div>
+                          <p className="font-bold text-slate-800">
+                            {book.title}
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            {book.author}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </Table.Cell>
+                    </Table.Cell>
 
-                  <Table.Cell>
-                    {new Date(book.createdAt).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </Table.Cell>
+                    {/* DATE */}
+                    <Table.Cell>
+                      {new Date(book.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </Table.Cell>
 
-                  {/* Admin Status সেল */}
-                  <Table.Cell>
-                    <span
-                      className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide inline-block ${getStatusColorClass(book?.status)}`}
-                    >
-                      {book?.status || "Unknown"}
-                    </span>
-                  </Table.Cell>
-
-                  {/* ✅ আপডেট করা VISIBILITY STATUS সেল */}
-                  <Table.Cell>
-                    <Select
-                      className="w-[140px]"
-                      // ১. স্ট্যাটাস approved না হলে disabled থাকবে
-                      isDisabled={book?.status?.toLowerCase() !== "approved"}
-                      // ২. approved হলে default Published থাকবে, না হলে Unpublished
-                      selectedKeys={[
-                        book?.status?.toLowerCase() === "approved"
-                          ? "Published"
-                          : "Unpublished",
-                      ]}
-                    >
-                      <Select.Trigger className="h-8 text-xs font-bold border-slate-200">
-                        <Select.Value />
-                        <Select.Indicator />
-                      </Select.Trigger>
-                      <Select.Popover>
-                        <ListBox>
-                          <ListBox.Item id="Published" textValue="Published">
-                            Published
-                          </ListBox.Item>
-                          <ListBox.Item
-                            id="Unpublished"
-                            textValue="Unpublished"
-                          >
-                            Unpublished
-                          </ListBox.Item>
-                        </ListBox>
-                      </Select.Popover>
-                    </Select>
-                  </Table.Cell>
-
-                  <Table.Cell>
-                    <div className="flex gap-2">
-                      <EditBookModal book={book} editButton={editButton} />
-                      <Button
-                        onClick={() => handleDeleteBook(book?._id)}
-                        isIconOnly
-                        size="sm"
-                        variant="flat"
-                        color="danger"
+                    {/* ADMIN STATUS */}
+                    <Table.Cell>
+                      <span
+                        className={`px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-wide inline-block ${getStatusColorClass(
+                          status,
+                        )}`}
                       >
-                        <FiTrash2 size={14} />
-                      </Button>
-                    </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+                        {status || "Unknown"}
+                      </span>
+                    </Table.Cell>
+
+                    {/* ✅ VISIBILITY STATUS  */}
+                    <Table.Cell>
+                      {status === "approved" ? (
+                        // Approved হলে Unpublish
+                        <Button
+                          size="sm"
+                          className="font-semibold text-xs bg-rose-50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 border border-rose-100/80 shadow-sm hover:shadow transition-all duration-200 rounded-full px-5 active:scale-95"
+                          onClick={() =>
+                            unpublishBookByLibrarian(book._id, "unpublish")
+                          }
+                        >
+                          Unpublish
+                        </Button>
+                      ) : status === "unpublished" || status === "unpublish" ? (
+                        // Unpublished হলে Publish
+                        <Button
+                          size="sm"
+                          className="font-semibold text-xs bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 border border-emerald-100/80 shadow-sm hover:shadow transition-all duration-200 rounded-full px-5 active:scale-95"
+                          onClick={() =>
+                            unpublishBookByLibrarian(book._id, "approved")
+                          }
+                        >
+                          Publish
+                        </Button>
+                      ) : (
+                        // Disabled / Waiting
+                        <Button
+                          size="sm"
+                          isDisabled
+                          variant="flat"
+                          className="text-[10px] font-bold tracking-widest uppercase text-slate-400 bg-slate-50 border border-slate-200/60 rounded-full px-5 cursor-not-allowed shadow-none"
+                        >
+                          {status || "Waiting"}
+                        </Button>
+                      )}
+                    </Table.Cell>
+
+                    {/* ACTIONS */}
+                    <Table.Cell>
+                      <div className="flex gap-2">
+                        <EditBookModal book={book} editButton={editButton} />
+                        <Button
+                          onClick={() => handleDeleteBook(book?._id)}
+                          isIconOnly
+                          size="sm"
+                          variant="flat"
+                          color="danger"
+                        >
+                          <FiTrash2 size={14} />
+                        </Button>
+                      </div>
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })}
             </Table.Body>
           </Table.Content>
         </Table.ScrollContainer>
