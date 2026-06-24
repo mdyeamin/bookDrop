@@ -10,7 +10,7 @@ export const serverFetch = async (path) => {
 export const secureServerFetch = async (path, token) => {
   const res = await fetch(`${baseUrl}${path}`, {
     cache: "no-store",
-    "content-type":"application/json",
+    "content-type": "application/json",
     headers: {
       ...(token && { authorization: `Bearer ${token}` }),
     },
@@ -27,8 +27,6 @@ export const serverMutation = async (path, data, method = "POST", token) => {
     headers: {
       "content-type": "application/json",
       ...(token && { authorization: `Bearer ${token}` }),
-      // authorization:`Bearer ${token?.token}`
-      // ...(await authHeader()),
     },
     body: data ? JSON.stringify(data) : undefined,
   });
