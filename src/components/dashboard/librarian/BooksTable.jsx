@@ -1,7 +1,7 @@
 "use client";
 
 import { Table, Button, Select, ListBox } from "@heroui/react";
-import { FiEdit2, FiTrash2, FiInfo } from "react-icons/fi";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { handleDeleteBook } from "@/lib/action/books";
 import { EditBookModal } from "./EditBookModal";
 
@@ -16,14 +16,24 @@ const BooksTable = ({ books }) => {
       <FiEdit2 size={16} />
     </Button>
   );
+
   console.log(books);
-  //   const handleStatusChange = (bookId, newStatus) => {
-  //     setBooks(
-  //       books.map((book) =>
-  //         book._id === bookId ? { ...book, status: newStatus } : book,
-  //       ),
-  //     );
-  //   };
+
+  // শুধুমাত্র ডিজাইনের জন্য স্ট্যাটাস অনুযায়ী কালার বের করার ফাংশন
+  const getStatusColorClass = (status) => {
+    switch (status?.toLowerCase()) {
+      case "approved":
+        return "bg-emerald-50 text-emerald-700 border border-emerald-100";
+      case "pending":
+        return "bg-orange-50 text-orange-700 border border-orange-100";
+      case "rejected":
+        return "bg-rose-50 text-rose-700 border border-rose-100";
+      case "unpublished":
+        return "bg-slate-100 text-slate-600 border border-slate-200";
+      default:
+        return "bg-slate-100 text-slate-600 border border-slate-200";
+    }
+  };
 
   return (
     <div className="w-full bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
@@ -44,6 +54,7 @@ const BooksTable = ({ books }) => {
             <Table.Header>
               <Table.Column isRowHeader>BOOK DETAILS</Table.Column>
               <Table.Column>DATE ADDED</Table.Column>
+              <Table.Column>ADMIN STATUS</Table.Column>
               <Table.Column>VISIBILITY STATUS</Table.Column>
               <Table.Column>ACTIONS</Table.Column>
             </Table.Header>
@@ -73,35 +84,46 @@ const BooksTable = ({ books }) => {
                     })}
                   </Table.Cell>
 
+                  {/* Admin Status সেল */}
                   <Table.Cell>
-                    {book.status === "pending" ? (
-                      <div className="inline-flex items-center gap-1 bg-orange-50 text-orange-700 px-2 py-1 rounded text-[11px] font-bold uppercase tracking-wide">
-                        <FiInfo size={12} />{book.status}
-                      </div>
-                    ) : (
-                      <Select
-                        className="w-[140px]"
-                        selectedKeys={[book.status]}
-                      >
-                        <Select.Trigger className="h-8 text-xs font-bold border-slate-200">
-                          <Select.Value />
-                          <Select.Indicator />
-                        </Select.Trigger>
-                        <Select.Popover>
-                          <ListBox>
-                            <ListBox.Item id="Published" textValue="Published">
-                              Published
-                            </ListBox.Item>
-                            <ListBox.Item
-                              id="Unpublished"
-                              textValue="Unpublished"
-                            >
-                              Unpublished
-                            </ListBox.Item>
-                          </ListBox>
-                        </Select.Popover>
-                      </Select>
-                    )}
+                    <span
+                      className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide inline-block ${getStatusColorClass(book?.status)}`}
+                    >
+                      {book?.status || "Unknown"}
+                    </span>
+                  </Table.Cell>
+
+                  {/* ✅ আপডেট করা VISIBILITY STATUS সেল */}
+                  <Table.Cell>
+                    <Select
+                      className="w-[140px]"
+                      // ১. স্ট্যাটাস approved না হলে disabled থাকবে
+                      isDisabled={book?.status?.toLowerCase() !== "approved"}
+                      // ২. approved হলে default Published থাকবে, না হলে Unpublished
+                      selectedKeys={[
+                        book?.status?.toLowerCase() === "approved"
+                          ? "Published"
+                          : "Unpublished",
+                      ]}
+                    >
+                      <Select.Trigger className="h-8 text-xs font-bold border-slate-200">
+                        <Select.Value />
+                        <Select.Indicator />
+                      </Select.Trigger>
+                      <Select.Popover>
+                        <ListBox>
+                          <ListBox.Item id="Published" textValue="Published">
+                            Published
+                          </ListBox.Item>
+                          <ListBox.Item
+                            id="Unpublished"
+                            textValue="Unpublished"
+                          >
+                            Unpublished
+                          </ListBox.Item>
+                        </ListBox>
+                      </Select.Popover>
+                    </Select>
                   </Table.Cell>
 
                   <Table.Cell>
