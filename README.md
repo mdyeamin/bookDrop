@@ -1,150 +1,160 @@
-# 📚 BookDrop – Online Book Delivery Management System
+# BookDrop
 
-BookDrop is a full-stack web application that connects readers, students, librarians, and book owners on a single platform. Users can browse books, request home delivery, track delivery status, and leave reviews. Librarians can manage their inventory and delivery requests, while admins oversee users, books, and platform activities.
+BookDrop is a full-stack online book delivery platform that connects readers, librarians, and administrators in a single ecosystem. The platform allows users to browse books, request home delivery, track delivery status, and leave verified reviews. Librarians can manage their inventory and delivery requests, while administrators oversee users, books, approvals, and transactions.
 
-## 🌐 Live Website
+## Live Project
 
-🚀 Live Site: :contentReference[oaicite:0]{index=0}
+**Live Website**
+https://bookdrop-sepia.vercel.app
 
-## 🔗 Repositories
+**Client Repository**
+https://github.com/mdyeamin/bookDrop
 
-### Client Side
-:contentReference[oaicite:1]{index=1}
-
-### Server Side
-:contentReference[oaicite:2]{index=2}
-
----
-
-## 🎯 Project Purpose
-
-The goal of BookDrop is to make books more accessible by allowing users to discover and receive books without visiting a physical library. The platform provides a smooth and secure experience for readers while helping librarians manage their collections and delivery operations efficiently.
+**Server Repository**
+https://github.com/mdyeamin/bookDrop-server
 
 ---
 
-## ✨ Key Features
+## Project Purpose
 
-### 👤 Authentication & Authorization
-- Email and password authentication
-- Google login support
-- Role-based access control (User, Librarian, Admin)
-- Protected routes using JWT authentication
+The purpose of BookDrop is to make books more accessible by bringing library and book delivery services online. Instead of visiting a physical library, users can explore available books, request delivery, and manage their reading activities from anywhere.
 
-### 📚 Book Management
-- Browse all available books
-- Search, filter, and sort books
-- View detailed book information
-- Book cover image upload using ImgBB
-- Publish and unpublish books
-
-### 🚚 Delivery System
-- Request book delivery
-- Stripe payment integration for delivery fees
-- Track delivery status:
-  - Pending
-  - Dispatched
-  - Delivered
-
-### ⭐ Review System
-- Verified review system
-- Only users with completed deliveries can leave reviews
-- Edit and delete reviews
-
-### 📊 Dashboard Features
-
-#### User Dashboard
-- Delivery history
-- Reading list
-- Review management
-- Statistics and charts
-
-#### Librarian Dashboard
-- Add new books
-- Manage inventory
-- Manage delivery requests
-- Earnings and analytics overview
-
-#### Admin Dashboard
-- Manage all users
-- Approve or reject books
-- Monitor transactions
-- Platform analytics and reports
-
-### 🎨 User Experience
-- Fully responsive design
-- Skeleton loading states
-- Toast notifications
-- Custom 404 page
-- Modern dashboard UI
-- Smooth animations with Framer Motion
+The project demonstrates modern full-stack development concepts including authentication, role-based authorization, payment integration, dashboard management, protected routes, and responsive user interfaces.
 
 ---
 
-## 🛠️ Technologies Used
+## Key Features
+
+### Authentication & Authorization
+
+* Email and password authentication
+* Google sign-in support
+* Role-based access control (User, Librarian, Admin)
+* Protected routes using JWT
+
+### Book Management
+
+* Browse all published books
+* Search and filter books by category and availability
+* Detailed book information page
+* Add, update, delete, publish, and unpublish books
+* Image hosting through ImgBB
+
+### Delivery System
+
+* Request book delivery
+* Stripe payment integration for delivery fees
+* Delivery status tracking
+* Delivery history management
+
+### Review System
+
+* Verified reviews for delivered books
+* Ratings and comments
+* Edit and delete review functionality
+
+### Dashboard Features
+
+* User Dashboard
+
+  * Delivery history
+  * Reading list
+  * Review management
+  * Statistics overview
+
+* Librarian Dashboard
+
+  * Inventory management
+  * Delivery request management
+  * Earnings and analytics
+
+* Admin Dashboard
+
+  * User management
+  * Book approval system
+  * Transaction monitoring
+  * Platform analytics
+
+### User Experience
+
+* Fully responsive design
+* Skeleton loading states
+* Toast notifications
+* Custom 404 page
+* Framer Motion animations
+* Modern dashboard layout
+
+---
+
+## Technologies Used
 
 ### Frontend
-- Next.js
-- React
-- Tailwind CSS
-- HeroUI
-- Framer Motion
-- Recharts
-- React Hook Form
-- React Icons
-- React Hot Toast
+
+* Next.js
+* React
+* Tailwind CSS
+* HeroUI
+* Framer Motion
+* Recharts
+* React Hook Form
+* Axios
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- JWT Authentication
-- Better Auth
-- Stripe Payment Gateway
 
-### Other Services
-- ImgBB Image Hosting
-- Vercel Deployment
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Better Auth
+* JWT
+* Stripe
+
+### Third-Party Services
+
+* ImgBB
+* Vercel
 
 ---
 
-## 📦 NPM Packages Used
+## NPM Packages Used
 
 ### Client
-- next
-- react
-- react-dom
-- @heroui/react
-- framer-motion
-- react-icons
-- react-hook-form
-- react-hot-toast
-- recharts
-- axios
-- sweetalert2
+
+* next
+* react
+* react-dom
+* @heroui/react
+* framer-motion
+* react-hook-form
+* react-icons
+* react-hot-toast
+* recharts
+* axios
+* sweetalert2
 
 ### Server
-- express
-- mongodb
-- cors
-- dotenv
-- jsonwebtoken
-- stripe
-- cookie-parser
-- better-auth
+
+* express
+* mongodb
+* cors
+* dotenv
+* jsonwebtoken
+* cookie-parser
+* stripe
+* better-auth
 
 ---
 
-## 🔐 Environment Variables
-
-The following environment variables are used to keep sensitive information secure:
+## Environment Variables
 
 ### Client
+
 ```env
 NEXT_PUBLIC_API_URL=
 NEXT_PUBLIC_IMGBB_API_KEY=
 ```
 
 ### Server
+
 ```env
 MONGODB_URI=
 JWT_SECRET=
@@ -155,9 +165,9 @@ BETTER_AUTH_URL=
 
 ---
 
-## 🚀 Installation
+## Installation
 
-### Clone Client Repository
+### Client
 
 ```bash
 git clone https://github.com/mdyeamin/bookDrop.git
@@ -166,7 +176,7 @@ npm install
 npm run dev
 ```
 
-### Clone Server Repository
+### Server
 
 ```bash
 git clone https://github.com/mdyeamin/bookDrop-server.git
@@ -177,15 +187,8 @@ npm start
 
 ---
 
-## 👨‍💻 Developer
+## Author
 
-**Md Yeamin**  
-Junior Full Stack Web Developer
+Md Yeamin
 
-Focused on building modern, responsive, and user-friendly web applications using Next.js, MongoDB, Better Auth, Tailwind CSS, and modern web technologies.
-
----
-
-## 📄 License
-
-This project was developed for educational and portfolio purposes.
+Junior Full Stack Web Developer focused on building responsive, scalable, and user-friendly web applications using modern JavaScript technologies.
