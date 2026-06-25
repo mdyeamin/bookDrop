@@ -5,9 +5,11 @@ import { authClient } from "../auth-client";
 import toast from "react-hot-toast";
 
 
+
 // a librarian can post books
 export const PostBook = async (data) => {
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData} = await authClient.token();
+  const token  = tokenData?.token
   console.log(token);
 
   const response = await serverMutation("/api/books", data ,"POST" ,token);
@@ -19,7 +21,8 @@ export const PostBook = async (data) => {
 };
 // a librarian can delete books
 export const handleDeleteBook = async (bookId) => {
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData } = await authClient.token();
+  const token  = tokenData?.token
   console.log(token);
 
   const response = await serverMutation(`/api/books/${bookId}`, null, "DELETE" ,token);
@@ -34,7 +37,8 @@ export const handleDeleteBook = async (bookId) => {
 // librarian can update book
 
 export const handleUpdateBook = async (bookId, data) => {
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData } = await authClient.token();
+  const token  = tokenData?.token
   console.log(token);
   const response = await serverMutation(`/api/books/${bookId}`, data, "PATCH", token);
   if (response.modifiedCount > 0) {
@@ -47,7 +51,8 @@ export const handleUpdateBook = async (bookId, data) => {
 // a librarian can unpublish books
 
 export const unpublishBookByLibrarian=async(bookId,data)=>{
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData } = await authClient.token();
+  const token  = tokenData?.token
   console.log(token);
   const response =await serverMutation(`/api/books/${bookId}`,{status:data},"PATCH", token)
   console.log(response);
@@ -69,7 +74,8 @@ export const unpublishBookByLibrarian=async(bookId,data)=>{
 // manage books by admin ****************
 // update book status 
 export const updateBookStatusByAdmin=async(bookId,data)=>{
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData } = await authClient.token();
+  const token  = tokenData?.token
   console.log(token);
   const response =await serverMutation(`/api/admin/books/${bookId}`,{status:data},"PATCH", token)
   console.log(response);
@@ -82,7 +88,8 @@ export const updateBookStatusByAdmin=async(bookId,data)=>{
 } 
 export const handleDeleteBookByAdmin = async (userId) => {
   
-  const { data: {token} } = await authClient.token();
+  const { data: tokenData } = await authClient.token();
+  const token  = tokenData?.token
     console.log(token);
   const response = await serverMutation(`/api/admin/books/${userId}`, null, "DELETE",token);
   if (response.deletedCount > 0) {
@@ -91,3 +98,23 @@ export const handleDeleteBookByAdmin = async (userId) => {
   return response;
 };
 // manage books by admin ****************
+
+
+// ekjon librarian er order er status update "Pending" to "Dispatched" to "Delivered".
+
+
+export const updateOrderStatusById = async (productId, newStatus)=>{
+const { data: tokenData } = await authClient.token();
+const token  = tokenData?.token
+    // console.log(token);
+
+    const response = await serverMutation(`/api/librarian/orders/${productId}`,{orderStatus:newStatus}, "PATCH",token)
+
+    if (response.modifiedCount > 0) {
+    redirect("/dashboard/librarian/manage-deliveries");
+  }
+ console.log("ffff",response);
+
+  return response;
+  }
+

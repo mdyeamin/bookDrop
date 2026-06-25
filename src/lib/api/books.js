@@ -24,7 +24,7 @@ export const getCurrentLibrarianBook = async (userId) => {
 };
 
 
-// ekjon librarian er kotota delivery hoyeche
+// ekjon librarian er kotota delivery /order hoyeche
 export const getCurrentLibrarianOrderedBook = async (librarianId)=>{
 const  tokenData  = await auth?.api?.getToken({
       headers: await headers(),
@@ -34,3 +34,6 @@ const  tokenData  = await auth?.api?.getToken({
 
 return secureServerFetch(`/api/librarian/orders?librarianid=${librarianId}`,token)
 }
+
+
+

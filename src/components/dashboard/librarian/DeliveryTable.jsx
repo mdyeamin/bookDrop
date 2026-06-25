@@ -1,37 +1,16 @@
 "use client";
 
+import { updateOrderStatusById } from "@/lib/action/books";
 import Image from "next/image";
 import React, { useState } from "react";
-import { toast } from "react-hot-toast";
+
 import { FiCheck, FiTruck, FiClock } from "react-icons/fi";
 
-const DeliveryTable = ({ orders: initialOrders }) => {
-  const [orders, setOrders] = useState(initialOrders || []);
+const DeliveryTable = ({ orders }) => {
+  
   const [loadingId, setLoadingId] = useState(null);
 
-  const handleStatusChange = async (orderId, newStatus) => {
-    try {
-      setLoadingId(orderId);
-
-      if (res?.modifiedCount > 0 || res?.success) {
-        setOrders((prev) =>
-          prev.map((order) =>
-            order._id === orderId
-              ? { ...order, orderStatus: newStatus }
-              : order,
-          ),
-        );
-        toast.success(`Status updated to ${newStatus}`);
-      } else {
-        toast.error("Failed to update status");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
-    } finally {
-      setLoadingId(null);
-    }
-  };
+  
 
   const getStatusBadge = (status) => {
     switch (status?.toLowerCase()) {
@@ -79,6 +58,8 @@ const DeliveryTable = ({ orders: initialOrders }) => {
           </thead>
           <tbody className="divide-y divide-slate-100 text-slate-700">
             {orders.map((order) => {
+                
+                
               const clientName = order.buyerDetails?.name || "Unknown Client";
               const clientImage = order?.buyerDetails?.image;
               const clientEmail = order.userEmail || order.buyerDetails?.email;
@@ -132,7 +113,7 @@ const DeliveryTable = ({ orders: initialOrders }) => {
                     {currentStatus === "pending" && (
                       <button
                         onClick={() =>
-                          handleStatusChange(order._id, "dispatched")
+                          updateOrderStatusById(order?._id, "dispatched")
                         }
                         disabled={loadingId === order._id}
                         className="bg-[#0A2540] hover:bg-[#103A62] text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5 ml-auto"
@@ -144,7 +125,7 @@ const DeliveryTable = ({ orders: initialOrders }) => {
                     {currentStatus === "dispatched" && (
                       <button
                         onClick={() =>
-                          handleStatusChange(order._id, "delivered")
+                          updateOrderStatusById(order._id, "delivered")
                         }
                         disabled={loadingId === order._id}
                         className="bg-[#FA5D39] hover:bg-[#E54823] text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 flex items-center justify-center gap-1.5 ml-auto"
