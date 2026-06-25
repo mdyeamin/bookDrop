@@ -4,7 +4,7 @@ import BooksContainer from "../BrowseBooks/BooksContainer";
 
 const FeaturedBooks = async () => {
   const featuredBooks = (await getAllBooks()) || [];
-  const books = featuredBooks.slice(0, 6);
+  const books = featuredBooks.slice(8, 14);
 
   return (
     <section className="py-16 md:py-24 bg-[#F8FAFC]">
