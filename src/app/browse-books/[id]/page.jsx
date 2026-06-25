@@ -20,13 +20,15 @@ const BookDetailsPage = async ({ params }) => {
 
   const userSession = await getUserSession();
   const user = userSession?.user;
-  const orderList = await getDeliveryOrder(user?.id);
+  const orderList = await getDeliveryOrder(user?.id) || [];
   console.log(orderList);
 
-  const isExistInOrderList = orderList.find((order) => order.productId === book._id,);
-  console.log("exist", isExistInOrderList.orderStatus);
+  // Safe check with ?.toString() and optional chaining to prevent crash if not found
+  const isExistInOrderList = orderList.find((order) => order.productId === book._id.toString());
+  console.log("exist", isExistInOrderList?.orderStatus);
 
-
+  // Check if order exists AND status is delivered
+  const isDelivered = isExistInOrderList?.orderStatus === 'delivered';
 
   if (!book) {
     return (
@@ -35,6 +37,7 @@ const BookDetailsPage = async ({ params }) => {
       </div>
     );
   }
+
   const editButton = (
     <Button
       size="sm"
@@ -305,7 +308,48 @@ const BookDetailsPage = async ({ params }) => {
               )}
             </div>
 
-            {/* Provider Operations Divider & Admin Actions */}
+            {/* Review Section - ONLY visible if order status is 'delivered' */}
+            {isDelivered && (
+              <div className="border-t border-slate-200 pt-8 mt-4 mb-8">
+                <h3 className="text-xl font-bold text-[#0A2540] mb-5">
+                  Share Your Thoughts
+                </h3>
+                <form className="flex flex-col gap-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">
+                      Rate this book
+                    </label>
+                    <div className="flex items-center gap-1.5 text-slate-300">
+                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
+                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
+                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
+                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
+                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="review" className="block text-sm font-bold text-slate-700 mb-2">
+                      Write a Review
+                    </label>
+                    <textarea
+                      id="review"
+                      name="review"
+                      rows="4"
+                      className="w-full border border-slate-300 rounded-lg p-3 text-slate-700 text-sm focus:outline-none focus:border-[#FA5D39] focus:ring-1 focus:ring-[#FA5D39] transition-shadow"
+                      placeholder="What did you think about this book? Your review helps others!"
+                      required
+                    ></textarea>
+                  </div>
+                  <Button
+                    type="submit"
+                    className="bg-[#0A2540] hover:bg-[#103A62] text-white font-bold px-8 h-11 rounded-lg self-start shadow-sm transition-colors"
+                  >
+                    Submit Review
+                  </Button>
+                </form>
+              </div>
+            )}
+
             {/* Provider Operations Divider & Admin Actions */}
             {isLibrarianOwner && (
               <div className="border-t border-slate-200 pt-6 mt-auto">
