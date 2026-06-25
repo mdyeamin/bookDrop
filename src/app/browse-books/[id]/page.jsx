@@ -27,8 +27,9 @@ const BookDetailsPage = async ({ params }) => {
   const isExistInOrderList = orderList.find((order) => order.productId === book._id.toString());
   console.log("exist", isExistInOrderList?.orderStatus);
 
-  // Check if order exists AND status is delivered
+  // Check order statuses
   const isDelivered = isExistInOrderList?.orderStatus === 'delivered';
+  const isPending = isExistInOrderList?.orderStatus === 'pending';
 
   if (!book) {
     return (
@@ -75,8 +76,8 @@ const BookDetailsPage = async ({ params }) => {
     statusText = isGloballyAvailable ? "Available" : "Checked Out";
     statusColor = isGloballyAvailable ? "bg-[#FF5A36]" : "bg-slate-400";
   } else if (hasAlreadyRequested) {
-    statusText = "Already Requested";
-    statusColor = "bg-blue-500";
+    statusText = isPending ? "Pending for Delivery" : "Already Requested";
+    statusColor = isPending ? "bg-[#F59E0B]" : "bg-blue-500";
   } else if (!isGloballyAvailable) {
     statusText = "Checked Out";
     statusColor = "bg-slate-400";
@@ -291,7 +292,7 @@ const BookDetailsPage = async ({ params }) => {
                   {isLibrarianOwner
                     ? "Your Book"
                     : hasAlreadyRequested
-                      ? "Already in Reading List"
+                      ? isPending ? "Pending for Delivery" : "Already in Reading List"
                       : "Currently Unavailable"}
                 </Button>
               )}
@@ -307,6 +308,25 @@ const BookDetailsPage = async ({ params }) => {
                 </Button>
               )}
             </div>
+
+            {/* Pending Section - ONLY visible if order status is 'pending' */}
+            {isPending && (
+              <div className="border-t border-slate-200 pt-8 mt-4 mb-8">
+                <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4 shadow-sm">
+                  <div className="bg-[#FEF3C7] p-3 rounded-full">
+                    <BsTruck size={24} className="text-[#D97706]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#92400E] mb-1">
+                      Delivery is Pending
+                    </h3>
+                    <p className="text-sm text-[#B45309]">
+                      Your request has been successfully placed. Please wait while the book is prepared for delivery.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Review Section - ONLY visible if order status is 'delivered' */}
             {isDelivered && (

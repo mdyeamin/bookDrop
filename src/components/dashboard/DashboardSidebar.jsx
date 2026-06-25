@@ -74,7 +74,7 @@ const DashboardSidebar = () => {
     },
     {
       name: "Manage Deliveries",
-      href: "/dashboard/librarian/deliveries",
+      href: "/dashboard/librarian/manage-deliveries",
       icon: FiTruck,
     },
   ];
