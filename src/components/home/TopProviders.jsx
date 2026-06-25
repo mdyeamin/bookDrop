@@ -4,21 +4,16 @@ import React from "react";
 import { FiStar, FiTruck } from "react-icons/fi";
 
 const TopProviders = async () => {
-  // API থেকে ইউজার ডেটা নিয়ে আসা
   const users = await getUsers();
-  
-  // শুধুমাত্র librarian রোলের ইউজারদের ফিল্টার করা
+
   const librarians = users?.filter((user) => user?.role === "librarian") || [];
-  
-  // ৪ থেকে ৭ নম্বর ইনডেক্সের ৩ জন লিব্রারিয়ানকে নেওয়া হচ্ছে
+
   const threeLibrarians = librarians.slice(4, 7);
 
-  // যদি ৩ জন লিব্রারিয়ান না পাওয়া যায়
   if (!threeLibrarians || threeLibrarians.length === 0) {
     return null;
   }
 
-  // স্ট্যাটিক ডেলিভারি এবং রেটিং কাউন্ট
   const staticStats = [
     { deliveries: 142, rating: "4.9" },
     { deliveries: 128, rating: "4.8" },
@@ -34,7 +29,6 @@ const TopProviders = async () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
         {/* Header Section */}
         <div className="text-center mb-16 sm:mb-24">
           <span className="text-[#FA5D39] font-extrabold tracking-widest uppercase text-[11px] mb-3 block">
@@ -44,14 +38,16 @@ const TopProviders = async () => {
             Top Providers of the Month
           </h2>
           <p className="text-slate-500 max-w-2xl mx-auto text-lg leading-relaxed">
-            Recognizing our most dedicated librarians who go above and beyond to ensure timely and safe book deliveries.
+            Recognizing our most dedicated librarians who go above and beyond to
+            ensure timely and safe book deliveries.
           </p>
         </div>
 
         {/* Providers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12 px-4 sm:px-0">
           {threeLibrarians.map((provider, index) => {
-            const fallbackInitial = provider?.name?.charAt(0).toUpperCase() || "L";
+            const fallbackInitial =
+              provider?.name?.charAt(0).toUpperCase() || "L";
             const stats = staticStats[index];
 
             return (
@@ -62,9 +58,13 @@ const TopProviders = async () => {
                 {/* Top Gradient Cover Photo */}
                 <div className="h-28 bg-gradient-to-br from-[#0A2540] to-[#18487A] relative">
                   {/* Subtle pattern overlay */}
-                  <div 
-                    className="absolute inset-0 opacity-10" 
-                    style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '16px 16px' }}
+                  <div
+                    className="absolute inset-0 opacity-10"
+                    style={{
+                      backgroundImage:
+                        "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+                      backgroundSize: "16px 16px",
+                    }}
                   ></div>
                 </div>
 
@@ -88,7 +88,9 @@ const TopProviders = async () => {
                     </div>
                     {/* Rank Badge */}
                     <div className="absolute -bottom-1 -right-1 bg-[#FA5D39] text-white w-9 h-9 flex items-center justify-center rounded-full border-[3px] border-white shadow-md z-20">
-                      <span className="text-[13px] font-black">#{index + 1}</span>
+                      <span className="text-[13px] font-black">
+                        #{index + 1}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -107,17 +109,25 @@ const TopProviders = async () => {
                     <div className="flex flex-col items-center">
                       <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                         <FiTruck size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Deliveries</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest">
+                          Deliveries
+                        </span>
                       </div>
-                      <p className="text-2xl font-black text-[#0A2540]">{stats.deliveries}</p>
+                      <p className="text-2xl font-black text-[#0A2540]">
+                        {stats.deliveries}
+                      </p>
                     </div>
-                    
+
                     <div className="flex flex-col items-center border-l border-slate-100">
                       <div className="flex items-center gap-1.5 text-slate-400 mb-1.5">
                         <FiStar size={14} className="text-[#D97706]" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Rating</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest">
+                          Rating
+                        </span>
                       </div>
-                      <p className="text-2xl font-black text-[#0A2540]">{stats.rating}</p>
+                      <p className="text-2xl font-black text-[#0A2540]">
+                        {stats.rating}
+                      </p>
                     </div>
                   </div>
                 </div>

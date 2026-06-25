@@ -1,5 +1,6 @@
 import FeaturedBooks from '@/components/home/FeaturedBooks';
 import HeroSlider from '@/components/home/HeroSlider';
+import PopularCategories from '@/components/home/PopularCategories';
 import TopProviders from '@/components/home/TopProviders';
 import React from 'react';
 
@@ -11,6 +12,7 @@ const Home = () => {
       <HeroSlider/>
       <FeaturedBooks/>
       <TopProviders/>
+      <PopularCategories/>
     </div>
   );
 };
