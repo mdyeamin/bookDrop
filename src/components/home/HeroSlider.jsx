@@ -114,15 +114,17 @@ const HeroSlider = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.7, delay: 0.7, ease: "easeOut" }}
                     >
+                      <Link href={'/browse-books'}>
                       <Button
-                        as={Link}
-                        href="/browse"
+                        
+                        
                         size="lg"
                         className="bg-[#F46036] hover:bg-[#D34A26] text-white font-bold px-8 h-14 text-base rounded-xl shadow-[0_8px_20px_rgba(244,96,54,0.3)] transition-all flex items-center gap-2 group"
                       >
                         Browse Books
                         <FiArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
                       </Button>
+                        </Link>
                     </motion.div>
                   </>
                 )}
