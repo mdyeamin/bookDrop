@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { serverMutation } from "../core/server";
 
 import { authClient } from "../auth-client";
+import toast from "react-hot-toast";
 
 
 // a librarian can post books
@@ -51,7 +52,11 @@ export const unpublishBookByLibrarian=async(bookId,data)=>{
   const response =await serverMutation(`/api/books/${bookId}`,{status:data},"PATCH", token)
   console.log(response);
   if(response.modifiedCount >0){
-
+  toast.success(
+  data === "approved" 
+    ? `Congratulations! Your book has been successfully published.` 
+    : `Status updated: Your book is ${data}.`
+);
     redirect('/dashboard/librarian/inventory')
   }
   
@@ -69,7 +74,7 @@ export const updateBookStatusByAdmin=async(bookId,data)=>{
   const response =await serverMutation(`/api/admin/books/${bookId}`,{status:data},"PATCH", token)
   console.log(response);
   if(response.modifiedCount >0){
-
+    
     redirect('/dashboard/admin/book-approval-queue')
   }
   

@@ -11,15 +11,23 @@ import { getDeliveryOrder } from "@/lib/api/order";
 import { getUserSession } from "@/lib/core/session";
 import { EditBookModal } from "@/components/dashboard/librarian/EditBookModal";
 import DeleteButton from "./DeleteButton";
+import Unpublished from "./Unpublished";
 
 const BookDetailsPage = async ({ params }) => {
   const { id } = await params;
   const book = await getBookById(id);
+  console.log(book);
 
   const userSession = await getUserSession();
   const user = userSession?.user;
+  const orderList = await getDeliveryOrder(user?.id);
+  console.log(orderList);
 
-  console.log(book._id);
+  const isExistInOrderList = orderList.find((order) => order.productId === book._id,);
+  console.log("exist", isExistInOrderList.orderStatus);
+
+
+
   if (!book) {
     return (
       <div className="min-h-[50vh] flex items-center justify-center text-[#0A2540] font-bold text-2xl">
@@ -37,13 +45,13 @@ const BookDetailsPage = async ({ params }) => {
       Edit Details
     </Button>
   );
+
   const isLibrarianOwner = user?.id && book.userId === user.id;
 
   let hasAlreadyRequested = false;
 
   if (user?.id && !isLibrarianOwner) {
     try {
-      const orderList = await getDeliveryOrder(user.id);
       hasAlreadyRequested = orderList.some(
         (order) => order.productId === book._id.toString(),
       );
@@ -58,7 +66,7 @@ const BookDetailsPage = async ({ params }) => {
     isGloballyAvailable && !hasAlreadyRequested && !isLibrarianOwner;
 
   let statusText = "Available";
-  let statusColor = "bg-[#FF5A36]"; // এভেইলেবল হলে কমলা রঙ
+  let statusColor = "bg-[#FF5A36]";
 
   if (isLibrarianOwner) {
     statusText = isGloballyAvailable ? "Available" : "Checked Out";
@@ -285,14 +293,16 @@ const BookDetailsPage = async ({ params }) => {
                 </Button>
               )}
 
-              {user&& <Button
-                size="lg"
-                variant="bordered"
-                className="bg-white border-slate-300 text-[#0A2540] hover:bg-slate-50 font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors"
-              >
-                <FiBookmark size={18} />
-                Save for Later
-              </Button>}
+              {user && (
+                <Button
+                  size="lg"
+                  variant="bordered"
+                  className="bg-white border-slate-300 text-[#0A2540] hover:bg-slate-50 font-bold px-8 h-12 rounded-lg flex items-center gap-2.5 transition-colors"
+                >
+                  <FiBookmark size={18} />
+                  Save for Later
+                </Button>
+              )}
             </div>
 
             {/* Provider Operations Divider & Admin Actions */}
@@ -304,14 +314,7 @@ const BookDetailsPage = async ({ params }) => {
                 </h4>
                 <div className="flex flex-wrap items-center gap-3">
                   <EditBookModal book={book} editButton={editButton} />
-                  <Button
-                    size="sm"
-                    variant="bordered"
-                    className="bg-white border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-slate-300 font-semibold h-9 px-4 rounded flex items-center gap-2"
-                  >
-                    <FiEyeOff size={13} />
-                    Unpublish
-                  </Button>
+                  <Unpublished id={book._id.toString()} />
                   <DeleteButton id={book._id.toString()} />
                 </div>
               </div>

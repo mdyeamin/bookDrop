@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { FiCheckCircle, FiHome, FiMail, FiPackage, FiBook } from "react-icons/fi";
 import { Button } from "@heroui/react";
-import { postPaymentData } from "@/lib/action/payment";
+import { postPaymentData } from "@/lib/action/order";
 
 
 export default async function Success({ searchParams }) {
@@ -35,8 +35,8 @@ export default async function Success({ searchParams }) {
   }
 
   if (status === "complete") {
-    await postPaymentData({...metadata,sessionId: session_id })
-    console.log("metadata",metadata,session_id);
+    await postPaymentData({...metadata,sessionId: session_id})
+    console.log("metadata",metadata);
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 bg-gradient-to-b from-[#F8FAFC] to-white py-12">
         <div className="max-w-lg w-full bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">

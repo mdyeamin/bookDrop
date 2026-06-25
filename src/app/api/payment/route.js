@@ -14,7 +14,7 @@ export async function POST(request) {
     const price = formData.get("price");
     const title = formData.get("title");
     const productId = formData.get("productId");
-
+    const orderStatus = 'pending'
     
 
     // Create Checkout Sessions from body params.
@@ -34,10 +34,11 @@ export async function POST(request) {
         },
       ],
       metadata: {
-        price: Number(price),
+        price: price,
         userId: user?.user?.id,
         userEmail: user?.user?.email,
         title,
+        orderStatus ,
         productId:productId,
       },
       mode: "payment",

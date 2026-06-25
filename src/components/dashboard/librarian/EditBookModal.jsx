@@ -80,6 +80,7 @@ export function EditBookModal({ book,editButton }) {
     const updatedData = Object.fromEntries(formData.entries());
     const payload = {
       ...updatedData,
+      status: "pending",
       image: photoURL,
     };
 
