@@ -104,7 +104,7 @@ export default async function Success({ searchParams }) {
 
             {/* Action Buttons - Fixed the "as={Link}" Error */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/dashboard/user/reading-list" className="flex-1">
+              <Link href="/dashboard/user/delivery-history" className="flex-1">
                 <Button className="w-full bg-[#0A2540] hover:bg-[#153e66] text-white font-semibold h-12 rounded-lg flex items-center justify-center gap-2 transition-all shadow-sm">
                   <FiPackage size={18} />
                   View Order
