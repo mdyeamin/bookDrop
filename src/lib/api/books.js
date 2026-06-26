@@ -3,8 +3,27 @@ import { secureServerFetch, serverFetch } from "../core/server";
 import { auth } from "../auth";
 
 // all books fetch from database
-export const getAllBooks = async () => {
-  return serverFetch(`/api/public/books`);
+
+export const getAllBooks = async (queryParams = {}) => {
+  try {
+    const params = new URLSearchParams();
+    
+    if (queryParams.search) params.append("search", queryParams.search);
+    if (queryParams.category) params.append("category", queryParams.category);
+    if (queryParams.fee) params.append("fee", queryParams.fee);
+    
+    
+    if (queryParams.page) params.append("page", queryParams.page);
+
+    const queryString = params.toString();
+    const path = queryString ? `/api/public/books?${queryString}` : `/api/public/books`;
+
+    return await serverFetch(path);
+  } catch (error) {
+    console.error("Error fetching public books:", error);
+   
+    return { books: [], totalPages: 1 }; 
+  }
 };
 
 // get single book by id 
@@ -35,5 +54,9 @@ const  tokenData  = await auth?.api?.getToken({
 return secureServerFetch(`/api/librarian/orders?librarianid=${librarianId}`,token)
 }
 
+// manage books by admin
+export const getAllBooksByAdmin = async () => {
+  return serverFetch("/api/public/books");
+};
 
 

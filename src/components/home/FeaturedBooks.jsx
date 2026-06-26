@@ -1,10 +1,13 @@
-import { getAllBooks } from "@/lib/api/books";
+// import { getAllBooks } from "@/lib/api/books";
 import React from "react";
 import BooksContainer from "../BrowseBooks/BooksContainer";
+import { getAllBooks} from "@/lib/api/books";
 
 const FeaturedBooks = async () => {
-  const featuredBooks = (await getAllBooks()) || [];
-  const books = featuredBooks.slice(8, 14);
+  const data = (await getAllBooks());
+  
+ const allBooks = Array.isArray(data) ? data : (data?.books || []);
+const books = allBooks.filter((book) => book.status === "approved").slice(0, 6);
 
   return (
     <section className="py-16 md:py-24 bg-[#F8FAFC]">

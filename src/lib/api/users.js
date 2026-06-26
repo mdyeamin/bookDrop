@@ -1,19 +1,14 @@
-import { headers } from "next/headers";
-import { auth } from "../auth";
-import { secureServerFetch, serverFetch } from "../core/server";
+
+import { serverFetch } from "../core/server";
 
 // get all user from the server
 export const getUsers = async () => {
   // const { data: token } = await authClient.token();
   //   console.log(token?.token);
 
-  const  tokenData  = await auth?.api?.getToken({
-    headers: await headers(),
-  });
-  const token = tokenData?.token
-  console.log(token);
+ 
 
-  return secureServerFetch("/api/users",token); // ← .token
+  return serverFetch("/api/users"); // ← .token
 };
 
 // manage books by admin

@@ -1,10 +1,11 @@
 import BooksTable from '@/components/dashboard/admin/BookApprovalQueue/BooksTable';
-import { getAllBooks } from '@/lib/api/books'; // আপনার API ফাইল
+import {  getAllBooksByAdmin } from '@/lib/api/books'; 
+
 import React from 'react';
 
 const AllBooks = async () => {
     
-    const manageBooks = await getAllBooks();
+    const manageBooks = await getAllBooksByAdmin();
 
     return (
         <div className="space-y-6">

@@ -52,7 +52,7 @@ const DashboardSidebar = () => {
     },
     {
       name: "My Reviews",
-      href: "/dashboard/user/reviews",
+      href: "/dashboard/user/my-reviews",
       icon: FiMessageSquare,
     },
   ];

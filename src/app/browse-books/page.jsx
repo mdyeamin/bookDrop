@@ -1,11 +1,16 @@
+import BookPagination from "@/components/BrowseBooks/BookPagination";
 import BooksContainer from "@/components/BrowseBooks/BooksContainer";
 import FilterBooks from "@/components/BrowseBooks/FilterBooks";
+
 import BookCardSkeleton from "@/components/Loading/BookCardSkeleton";
 import { getAllBooks } from "@/lib/api/books";
 import React, { Suspense } from "react";
 
-const BrowseBooks = async () => {
-  const books = await getAllBooks();
+const BrowseBooks = async ({ searchParams }) => {
+  const resolvedParams = await searchParams;
+  
+  
+  const { books = [], totalPages = 1 } = await getAllBooks(resolvedParams);
 
   return (
     <div>
@@ -23,6 +28,9 @@ const BrowseBooks = async () => {
       >
         <BooksContainer books={books} />
       </Suspense>
+
+    
+      <BookPagination totalPages={totalPages} />
     </div>
   );
 };
