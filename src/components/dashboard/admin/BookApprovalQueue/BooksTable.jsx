@@ -7,7 +7,8 @@ import Image from "next/image";
 import { handleDeleteBookByAdmin, updateBookStatusByAdmin } from "@/lib/action/books";
 
 const BooksTable = ({ initialBooks }) => {
-  const books = initialBooks
+  const books = initialBooks || {}
+// console.log("books",books);
 
  
   const getStatusColorClass = (status) => {

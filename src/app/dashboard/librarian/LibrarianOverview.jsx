@@ -17,7 +17,7 @@ import {
 } from "recharts";
 
 const LibrarianOverview = ({ orders = [], books = [] }) => {
-  // ১. Quick Stats ক্যালকুলেশন
+  // ১. Quick Stats 
   const totalBooksListed = books.length;
 
   const activePendingRequests = orders.filter(

@@ -6,6 +6,7 @@ import React from 'react';
 const AllBooks = async () => {
     
     const manageBooks = await getAllBooksByAdmin();
+console.log(manageBooks);
 
     return (
         <div className="space-y-6">

@@ -54,9 +54,30 @@ const  tokenData  = await auth?.api?.getToken({
 return secureServerFetch(`/api/librarian/orders?librarianid=${librarianId}`,token)
 }
 
+
+// admin all order dekhte pabe 
+export const getOrderedBookForAdmin = async () => {
+  try {
+    const tokenData = await auth?.api?.getToken({
+      headers: await headers(),
+    });
+    
+    const token = tokenData?.token;
+    
+    
+    return await secureServerFetch(`/api/admin/orders`, token);
+  } catch (error) {
+    console.error("Error fetching ordered books for admin:", error);
+    return [];
+  }
+};
+
+
+
+
 // manage books by admin
 export const getAllBooksByAdmin = async () => {
-  return serverFetch("/api/public/books");
+  return serverFetch("/api/books");
 };
 
 

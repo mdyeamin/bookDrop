@@ -94,11 +94,11 @@ const DashboardSidebar = () => {
       href: "/dashboard/admin/users",
       icon: FiUsers,
     },
-    {
-      name: "Manage All Books",
-      href: "/dashboard/admin/manage-all-books",
-      icon: FiBookOpen,
-    },
+    // {
+    //   name: "Manage All Books",
+    //   href: "/dashboard/admin/manage-all-books",
+    //   icon: FiBookOpen,
+    // },
     {
       name: "View All Transactions",
       href: "/dashboard/admin/transactions",
