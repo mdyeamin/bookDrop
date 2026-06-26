@@ -51,7 +51,7 @@ const MyReviews = () => {
                         My Reviews
                     </h1>
                     <p className="text-slate-500 mt-1">
-                        Manage and view all the feedback you've shared on books.
+                        Manage and view all the feedback you have shared on books.
                     </p>
                 </div>
                 <div className="hidden sm:block px-4 py-2 bg-blue-50 text-blue-700 rounded-full font-semibold text-sm">
@@ -106,7 +106,7 @@ const MyReviews = () => {
 
                                 {/* Review Content */}
                                 <p className="text-slate-600 text-sm leading-relaxed mb-4">
-                                    "{review.reviewText}"
+                                    {review.reviewText}
                                 </p>
                             </div>
 
@@ -125,7 +125,7 @@ const MyReviews = () => {
                     </div>
                     <h3 className="text-lg font-bold text-slate-700 mb-1">No reviews yet</h3>
                     <p className="text-slate-500 max-w-sm">
-                        You haven't shared your thoughts on any books. Once you write a review, it will appear here.
+                        You have not shared your thoughts on any books. Once you write a review, it will appear here.
                     </p>
                 </div>
             )}
