@@ -18,6 +18,7 @@ import {
   FiPlus,
   FiPlusCircle,
   FiTruck,
+  FiUser,
   FiUsers,
   FiX,
 } from "react-icons/fi";
@@ -32,7 +33,6 @@ const DashboardSidebar = () => {
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
   const router = useRouter();
- 
 
   const userNavItems = [
     {
@@ -101,7 +101,7 @@ const DashboardSidebar = () => {
     // },
     {
       name: "View All Transactions",
-      href: "/dashboard/admin/transactions",
+      href: "/dashboard/admin/view-all-transactions",
       icon: FiCreditCard,
     },
   ];
@@ -112,12 +112,10 @@ const DashboardSidebar = () => {
     admin: adminNavItems,
   };
   const navItems = navLinksMap[user?.role || "user"] || {};
-  
-
 
   if (isPending) {
-  return <SidebarSkeleton />; 
-}
+    return <SidebarSkeleton />;
+  }
 
   return (
     <>
@@ -162,7 +160,7 @@ const DashboardSidebar = () => {
         {/* UPPER PORTION */}
         <div className="space-y-8">
           {/* 1. BRAND LOGO SECTION (Hidden in mobile top-bar layout view) */}
-          {/* ২. ব্র্যান্ড লোগো হেডার */}
+
           <div className="relative z-10 w-full self-start hidden lg:block">
             <Link
               href="/"
@@ -181,7 +179,6 @@ const DashboardSidebar = () => {
 
           {/* 2. ADMIN USER PROFILE CARD CONTAINER */}
           <div className="flex items-center gap-4 bg-transparent p-1 select-none w-full">
-            {/* ১. অ্যাভাটার উইথ থিক সার্কুলার রিং (image_854ccb.png এর মতো) */}
             <Avatar
               size="md"
               className={`w-12 h-12 ring-[3px] bg-transparent shrink-0 transition-all duration-300 ${
@@ -201,14 +198,11 @@ const DashboardSidebar = () => {
               </Avatar.Fallback>
             </Avatar>
 
-            {/* ২. টেক্সট লেআউট */}
             <div className="flex flex-col text-left min-w-0">
-              {/* প্রথম লাইন: ইউজারের নাম */}
               <span className="text-[16px] font-bold text-white tracking-wide leading-tight truncate">
                 {user?.name}
               </span>
 
-              {/* দ্বিতীয় লাইন: ডাইনামিক রোল কালার (প্রফেশনাল সফট টোন) */}
               <span
                 className={`text-[13px] font-black tracking-wider uppercase truncate mt-1 transition-colors duration-300 ${
                   user?.role === "admin"
@@ -255,14 +249,26 @@ const DashboardSidebar = () => {
           </nav>
 
           {/* 4. ACTION INTERACTION BUTTON */}
-          <div className="pt-2">
+          <div className="pt-4 flex flex-col gap-3">
+            {/* Primary Button: New Shipment */}
             <Button
-              className="w-full h-10 bg-[#F46036] hover:bg-[#D34A26] text-white font-black text-xs rounded-lg uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2"
+              className="w-full h-11 bg-[#F46036] hover:bg-[#D34A26] text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
               onClick={() => console.log("New Shipment triggered")}
             >
-              <FiPlus size={14} strokeWidth={3} />
+              <FiPlus size={18} strokeWidth={2.5} />
               <span>New Shipment</span>
             </Button>
+
+            {/* Secondary Button: Profile */}
+            <Link href={`/dashboard/profile`}>
+            <Button
+              className="w-full h-11 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-slate-300 font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2"
+              onClick={() => console.log("Profile triggered")}
+              >
+              <FiUser size={18} strokeWidth={2.5} className="text-slate-400" />
+              <span>View Profile</span>
+            </Button>
+              </Link>
           </div>
         </div>
 

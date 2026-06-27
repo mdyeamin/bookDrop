@@ -8,7 +8,7 @@ const DashboardAdmin = async () => {
   const manageBooks = await getAllBooksByAdmin();
   const orderedBook = await getOrderedBookForAdmin();
 
-  // console.log(orderedBook);
+  console.log(orderedBook);
 
   return (
     <div className="p-4 sm:p-6 w-full max-w-7xl mx-auto">
