@@ -26,14 +26,14 @@ const AddNewBookForm = (userId) => {
     { id: "Fiction", label: "Fiction" },
     { id: "Sci-Fi", label: "Sci-Fi" },
     { id: "Fantasy", label: "Fantasy" },
-    { id: "Mystery-Thriller", label: "Mystery & Thriller" },
+    { id: "Mystery-Thriller", label: "Mystery-Thriller" },
     { id: "Romance", label: "Romance" },
     { id: "Academic", label: "Academic" },
     { id: "History", label: "History" },
     { id: "Biography", label: "Biography" },
     { id: "Self-Help", label: "Self-Help" },
-    { id: "Business", label: "Business & Economics" },
-    { id: "Children", label: "Children's Books" },
+    { id: "Business", label: "Business" },
+    { id: "Children", label: "Children" },
     { id: "Poetry", label: "Poetry" },
   ];
   // 1. Image Upload & Validation Logic (Similar to Sign Up Page)

@@ -6,13 +6,25 @@ import { IoMdLogIn } from "react-icons/io";
 import { BiBookOpen, BiCalendar } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
 import { FiChevronRight, FiBookmark, FiEdit2, FiEyeOff } from "react-icons/fi";
-import { Button } from "@heroui/react";
+import { Button, Form } from "@heroui/react";
 import { getDeliveryOrder } from "@/lib/api/order";
 import { getUserSession } from "@/lib/core/session";
 import { EditBookModal } from "@/components/dashboard/librarian/EditBookModal";
 import DeleteButton from "./DeleteButton";
 import Unpublished from "./Unpublished";
+import UserReviewForm from "./UserReviewForm";
 
+export async function generateMetadata({ params }) {
+  const id = (await params).id;
+  // console.log(id);
+  const book = await getBookById(id);
+  // console.log(doctor, "doctor Data");
+
+  return {
+    title: `${book?.title} || ${book?.author}`,
+    description: book?.description,
+  };
+}
 const BookDetailsPage = async ({ params }) => {
   const { id } = await params;
   const book = await getBookById(id);
@@ -21,11 +33,11 @@ const BookDetailsPage = async ({ params }) => {
   const userSession = await getUserSession();
   const user = userSession?.user;
   const orderList = await getDeliveryOrder(user?.id) || [];
-  console.log(orderList);
+  // console.log(orderList);
 
   // Safe check with ?.toString() and optional chaining to prevent crash if not found
   const isExistInOrderList = orderList.find((order) => order.productId === book._id.toString());
-  console.log("exist", isExistInOrderList?.orderStatus);
+  // console.log("exist", isExistInOrderList?.orderStatus);
 
   // Check order statuses
   const isDelivered = isExistInOrderList?.orderStatus === 'delivered';
@@ -334,39 +346,7 @@ const BookDetailsPage = async ({ params }) => {
                 <h3 className="text-xl font-bold text-[#0A2540] mb-5">
                   Share Your Thoughts
                 </h3>
-                <form className="flex flex-col gap-5 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                  <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-2">
-                      Rate this book
-                    </label>
-                    <div className="flex items-center gap-1.5 text-slate-300">
-                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
-                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
-                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
-                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
-                      <FaStar size={24} className="hover:text-[#FDE68A] cursor-pointer transition-colors" />
-                    </div>
-                  </div>
-                  <div>
-                    <label htmlFor="review" className="block text-sm font-bold text-slate-700 mb-2">
-                      Write a Review
-                    </label>
-                    <textarea
-                      id="review"
-                      name="review"
-                      rows="4"
-                      className="w-full border border-slate-300 rounded-lg p-3 text-slate-700 text-sm focus:outline-none focus:border-[#FA5D39] focus:ring-1 focus:ring-[#FA5D39] transition-shadow"
-                      placeholder="What did you think about this book? Your review helps others!"
-                      required
-                    ></textarea>
-                  </div>
-                  <Button
-                    type="submit"
-                    className="bg-[#0A2540] hover:bg-[#103A62] text-white font-bold px-8 h-11 rounded-lg self-start shadow-sm transition-colors"
-                  >
-                    Submit Review
-                  </Button>
-                </form>
+                <UserReviewForm book={book} user={user}/>
               </div>
             )}
 
